@@ -64,7 +64,7 @@
         </legend>
       
         <table class="listing border">
-          <tr><th>Marque</th><th>Modèle</th><th>Année</th><th>Code</th><th>Motorisation</th><th>Energie</th><th>Puiss.<br />(ch)</th><th>Couple<br />(N.m)</th><th>Boîte</th><th>Propriétaire</th></tr>
+          <tr><th>Marque</th><th>Modèle</th><th>Année</th><th>Code</th><th>Motorisation</th><th>Energie</th><th>Puiss.<br />(ch)</th><th>Couple<br />(N.m)</th><th>Boîte</th><th colspan="2">Propriétaire</th></tr>
           <?php
           $id_groupe = empty($_POST['group']) ? $first_group : $_POST['group'];
           
@@ -88,8 +88,8 @@
               
               echo '<tr><td>', $voiture->lib_marque, '</td><td>', $voiture->lib_modele, '</td><td>', $voiture->annee, '</td><td>', $voiture->lib_code,
                 '</td><td>', $voiture->lib_motorisation, '</td><td>', $voiture->energie, '</td><td>', $voiture->puissance, '</td><td>', $voiture->couple,
-                '</td><td>', $voiture->lib_boite, '</td><td><img class="avatar" src="uploads/',
-                str_pad($voiture->id_utilisateur, 10, '0', STR_PAD_LEFT), '/thumbnail.jpg" /> <span title="', $voiture->lib_voiture, '">', $voiture->login, '</span></td>',
+                '</td><td>', $voiture->lib_boite, '</td><td><span style=\"\" title="', $voiture->lib_voiture, '">', $voiture->login, '</span></td><td><img class="avatar" src="uploads/',
+                str_pad($voiture->id_utilisateur, 10, '0', STR_PAD_LEFT), '/thumbnail.jpg" onerror=this.src=\'graphics/default.png\' /> </td>',
                 $admin == '1' ? '<td><a href="profile_car_edit.php?car_id='.$voiture->id_voiture.'"><img src="graphics/pencil.png" /></a></td>' : '',
                 '</tr>', "\n";
             }

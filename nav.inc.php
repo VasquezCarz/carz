@@ -1,9 +1,5 @@
 <div id="nav">
-  <div id="nav_links">
-    <a href="index.php">Accueil</a>
-    <a href="stats.php">Statistiques</a>
-	<a href="trombi.php">Trombinoscope</a>
-  </div>
+
   <div id="nav_auth">
     <?php
     // Contrôle de la variable de session 'login'
@@ -34,5 +30,10 @@
     echo $msg;
     $_SESSION['msg'] = '';
     ?>
+  </div>
+  <div id="nav_links">
+    <a href="index.php">Accueil</a>
+    <a href="stats.php">Statistiques</a>
+	<a href="trombi.php">Trombinoscope</a>
   </div>
 </div>

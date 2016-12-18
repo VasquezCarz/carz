@@ -25,6 +25,7 @@ nav {
   background-color: #F2F2F2;
   color: #000000;
   padding: 5px;
+  border-radius: 5px 5px 0px 0px;
 }
 
 section {
@@ -35,14 +36,28 @@ section {
 }
 
 footer {
-  width: 800px;
+  width: 790px;
   margin: 0 auto;
-  color: #FFFFFF;
+  color: #000000;
+  background-color: #E6E6E6;
+  padding:10px;
+  margin-bottom:20px;
+  border-radius: 0 0 5px 5px;
 }
 
 h2{
-	margin-left: 20px;
+  color: #6E6E6E;
+  margin-left: 20px;
+  border-bottom: 1px #BDBDBD solid;
+  width: 700px;
 	
+}
+
+hr{
+	margin-top:10px;
+	border: 0;
+    height: 1px;
+    background-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0));
 }
 
 .thick {
@@ -79,12 +94,30 @@ table td img.avatar {
   height: 30px;
 }
 
+table th.stats_label{
+	width:100px;
+}
+
+table th.stats_nb{
+	width:25px;
+}
+
+table th.stats_taux{
+	width:50px;
+}
+
 table.listing tr:nth-child(even) {
   background-color: #E6E6E6;
 }
 
 table.stats td {
   text-align: right;
+  padding: 5px;
+}
+
+table.stats th{
+	background-color:#E6E6E6;
+	padding: 5px;
 }
 
 span.success {
@@ -141,17 +174,14 @@ div.groups {
 }
 
 div#nav{
-  margin-bottom: 5px;
-  border-top: 1px gray solid;
-  border-bottom: 1px gray solid;
-  background-color: #FFFFFF;
-  padding: 5px;
-  height: 60px;
+
+  height: 70px;
 }
 
 div#nav_links{
-  margin-top: 5px;
-  margin-bottom: 15px;
+  margin-top:20px;
+  border-bottom: 1px #F5A9A9 solid;
+  padding-bottom:5px;
 }
 
 div#nav_links a{

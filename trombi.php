@@ -18,8 +18,8 @@
   <body>
     <?php
     include 'config/carz.conf.php';
-    include PATH_SCRIPTS.'/php/Database.class.php';
-	
+    require_once(PATH_SCRIPTS.'/php/Database.class.php');
+    require_once(PATH_SCRIPTS.'/php/User.class.php');	
     
     ?>
     <header>
@@ -33,7 +33,22 @@
     </nav>
     
     <section>
-      <p>A venir...</p>
+	  <table>
+	  <?php
+        $db = new Database();
+        $db->connect();
+	    $query = 'SELECT login FROM crz_utilisateur';
+        if ($result = $db->query($query)) {
+          $i = 0;
+          while ($user = $result->fetch_object('User')) {
+            if($i%3 == 0) echo "<tr>";
+            echo "<td style=\"width:100px;border:1px gray dotted; padding:10px;\"><img style=\"width:50px;margin-left:25px;\" src=\"graphics/people.png\"/><p style=\"text-align:center;\">" . $user->login . "</p></td>";
+            if($i%3 == 2) echo "</tr>\n";
+            $i++;
+          }
+        }
+	  ?>
+      </table>
     </section>
 		
     <footer>
