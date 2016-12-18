@@ -29,8 +29,8 @@
     </header>
     
     <nav>
-      Statistiques
       <?php include 'nav.inc.php'; ?>
+      <h2>Statistiques</h2>
     </nav>
     
     <section>
@@ -114,41 +114,96 @@
       
       if ($result = $db->query($query)) {				
       ?>
-        <br />
+      <hr/>
+      <div style="margin-top: 20px; height: 320px;">
+	  
+        <div style="width:300px; height: 300px; float: left;">
         <table class="border stats">
           <tr><th>Energie</th><th>Nb</th><th>Taux</th></tr>
           <?php
+          $labels = "";
+          $valeurs = "";
           while ($stats2 = $result->fetch_object('Stats2')) {
+            // PG : pour les stats
+            $labels .= "\"" . $stats2->energie . "\",";
+            $valeurs .= $stats2->nb_energie . ",";
+            // PG : Fin pour les stats
             echo '<tr><td>', $stats2->energie, '</td><td>', $stats2->nb_energie, '</td><td>', round($stats2->nb_energie * 100 / $stats1->ccnt, 2), '%</td></tr>';
           }
           ?>
         </table>
-      <?php
-      }
+        </div>
+        <div style="width:300px; height: 300px; float: left;">
+          <canvas id="myChart" width="300" height="300"></canvas>
+        </div>
+      </div>
+      <hr/>
+      <div>
+        <?php
+        }
       
-      $query = 'SELECT m.suralimentation, COUNT(v.id_voiture) AS nb_sural';
-      $query .= ' FROM crz_voiture v';
-      $query .= ' INNER JOIN crz_puissance p ON v.fk_puissance = p.id_puissance';
-      $query .= ' INNER JOIN crz_motorisation m ON p.fk_motorisation = m.id_motorisation';
-      $query .= ' GROUP BY m.suralimentation';
+        $query = 'SELECT m.suralimentation, COUNT(v.id_voiture) AS nb_sural';
+        $query .= ' FROM crz_voiture v';
+        $query .= ' INNER JOIN crz_puissance p ON v.fk_puissance = p.id_puissance';
+        $query .= ' INNER JOIN crz_motorisation m ON p.fk_motorisation = m.id_motorisation';
+        $query .= ' GROUP BY m.suralimentation';
       
-      if ($result = $db->query($query)) {
-      ?>
-        <br />
-        <table class="border stats">
-          <tr><th>Suralimentation</th><th>Nb</th><th>Taux</th></tr>
-          <?php
-          while ($stats3 = $result->fetch_object('Stats3')) {
-            echo '<tr><td>', $stats3->suralimentation, '</td><td>', $stats3->nb_sural, '</td><td>', round($stats3->nb_sural * 100 / $stats1->ccnt, 2), '%</td></tr>';
-          }
-          ?>
-        </table>
-      <?php
-      }
-      $db->close();
-      ?>
+        if ($result = $db->query($query)) {
+        ?>
+          <br />
+          <table class="border stats">
+            <tr><th>Suralimentation</th><th>Nb</th><th>Taux</th></tr>
+            <?php
+            while ($stats3 = $result->fetch_object('Stats3')) {
+              echo '<tr><td>', $stats3->suralimentation, '</td><td>', $stats3->nb_sural, '</td><td>', round($stats3->nb_sural * 100 / $stats1->ccnt, 2), '%</td></tr>';
+            }
+            ?>
+          </table>
+        <?php
+        }
+        $db->close();
+        ?>
+      </div>
     </section>
-    
+    <script>     
+	  var data = {
+	    labels: [
+		<?php echo $labels; ?>
+		/*"Red",
+		"Blue",
+		"Yellow"*/
+	    ],
+	    datasets: [{
+		  label: '# of cars',
+	      data: [/*300, 50, 100*/<?php echo $valeurs; ?>],
+          backgroundColor: [
+				"#FF6384",
+				"#36A2EB",
+				"#FFCE56"
+          ],
+          hoverBackgroundColor: [
+				"#FF6384",
+				"#36A2EB",
+				"#FFCE56"
+          ]
+	    }]
+	  };
+	
+      var options = {
+        title: {
+          display: true,
+          text: 'Energie',
+          fullWidth: true
+        }
+     };
+
+	  var ctx = document.getElementById("myChart");
+	  var myPieChart = new Chart(ctx,{
+		type: 'doughnut',
+		data: data ,
+		options: options
+	  });
+    </script>     
     <footer>
       <?php include "footer.inc.php"; ?>
     </footer>

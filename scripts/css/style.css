@@ -40,6 +40,11 @@ footer {
   color: #FFFFFF;
 }
 
+h2{
+	margin-left: 20px;
+	
+}
+
 .thick {
   border: solid black 3px;
 }
@@ -133,6 +138,38 @@ div.cars {
 
 div.groups {
   width: 500px;
+}
+
+div#nav{
+  margin-bottom: 5px;
+  border-top: 1px gray solid;
+  border-bottom: 1px gray solid;
+  background-color: #FFFFFF;
+  padding: 5px;
+  height: 60px;
+}
+
+div#nav_links{
+  margin-top: 5px;
+  margin-bottom: 15px;
+}
+
+div#nav_links a{
+  text-decoration: none;
+  padding: 5px;
+  background-color: #F5A9A9;
+  color: #FFFFFF;
+  font-size:1.2em;
+}
+
+div#nav_links a:hover{
+  text-decoration: underline;
+  background-color: #F78181;
+}
+
+div#nav_auth{
+  margin-top: 5px;
+  
 }
 
 ul {

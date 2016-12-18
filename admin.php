@@ -21,8 +21,9 @@ if (empty($_SESSION['id_utilisateur'])) {
     </header>
     
     <nav>
-      Administration
+      
       <?php include 'nav.inc.php'; ?>
+      <h2>Administration</h2>
     </nav>
     
     <section>

@@ -21,8 +21,8 @@ if (empty($_SESSION['id_utilisateur'])) {
   	</header>
     
     <nav>
-      Mon compte
       <?php include 'nav.inc.php'; ?>
+      <h2>Mon compte</h2>
     </nav>
     
     <section>

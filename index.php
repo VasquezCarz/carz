@@ -28,8 +28,8 @@
     </header>
     
     <nav>
-      Index
       <?php include 'nav.inc.php'; ?>
+      <h2>Accueil</h2>
     </nav>
     
     <section>
