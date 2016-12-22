@@ -40,9 +40,12 @@ footer {
   color: #FFFFFF;
 }
 
-h2{
-	margin-left: 20px;
-	
+h2 {
+  margin-left: 20px;  
+}
+
+a img {
+  vertical-align: middle;
 }
 
 .thick {
@@ -140,7 +143,7 @@ div.groups {
   width: 500px;
 }
 
-div#nav{
+div#nav {
   margin-bottom: 5px;
   border-top: 1px gray solid;
   border-bottom: 1px gray solid;
@@ -149,12 +152,12 @@ div#nav{
   height: 60px;
 }
 
-div#nav_links{
+div#nav_links {
   margin-top: 5px;
   margin-bottom: 15px;
 }
 
-div#nav_links a{
+div#nav_links a {
   text-decoration: none;
   padding: 5px;
   background-color: #F5A9A9;
@@ -162,14 +165,13 @@ div#nav_links a{
   font-size:1.2em;
 }
 
-div#nav_links a:hover{
+div#nav_links a:hover {
   text-decoration: underline;
   background-color: #F78181;
 }
 
-div#nav_auth{
-  margin-top: 5px;
-  
+div#nav_auth {
+  margin-top: 5px;  
 }
 
 ul {

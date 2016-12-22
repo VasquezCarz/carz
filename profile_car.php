@@ -29,6 +29,8 @@ if (empty($_SESSION['id_utilisateur'])) {
       <?php
       include 'config/carz.conf.php';
       include PATH_SCRIPTS.'/php/Database.class.php';
+      require_once(PATH_SCRIPTS.'/php/Voiture.class.php');
+      require_once(PATH_SCRIPTS.'/php/Pays.class.php');
       
       $db = new Database();
       $db->connect();
@@ -44,13 +46,14 @@ if (empty($_SESSION['id_utilisateur'])) {
             $found = false;
             $query = 'SELECT id_marque, lib_marque FROM crz_marque ORDER BY lib_marque';
             $result = $db->query($query);
-            $num_rows = $db->numRows($result);
-            for ($i = 0; $i < $num_rows; $i++) {
-              $id_marque = $db->result($result, $i, 'id_marque');
+            $i = 0;
+            while ($voiture = $result->fetch_object('Voiture')) {
+              $id_marque = $voiture->id_marque;
               if ($i == 0) $first = $id_marque;
               if ($_SESSION['selectedBrand'] == $id_marque) $found = true;
-              $lib_marque = $db->result($result, $i, 'lib_marque');
+              $lib_marque = $voiture->lib_marque;
               echo '<option value="', $id_marque, '"', $_SESSION['selectedBrand'] == $id_marque ? ' selected="selected"' : '', '>', $lib_marque, '</option>', "\n";
+              $i++;
             }
             if (!$found) $_SESSION['selectedBrand'] = $first;
             ?>
@@ -62,10 +65,9 @@ if (empty($_SESSION['id_utilisateur'])) {
             <?php
             $query = 'SELECT id_pays, lib_pays FROM crz_pays ORDER BY lib_pays';
             $result = $db->query($query);
-            $num_rows = $db->numRows($result);
-            for ($i = 0; $i < $num_rows; $i++) {
-              $id_pays = $db->result($result, $i, 'id_pays');
-              $lib_pays = $db->result($result, $i, 'lib_pays');
+            while ($pays = $result->fetch_object('Pays')) {
+              $id_pays = $pays->id_pays;
+              $lib_pays = $pays->lib_pays;
               echo '<option value="', $id_pays, '">', $lib_pays, '</option>', "\n";
             }
             ?>
@@ -84,14 +86,15 @@ if (empty($_SESSION['id_utilisateur'])) {
             $first = 0;
             $found = false;
             $query = $db->writeQuery('SELECT id_modele, lib_modele FROM crz_modele WHERE fk_marque = %d ORDER BY lib_modele', (int) $_SESSION['selectedBrand']);
-            $result = $db->query($query);
-            $num_rows = $db->numRows($result);
-            for ($i = 0; $i < $num_rows; $i++) {
-              $id_modele = $db->result($result, $i, 'id_modele');
+            $result2 = $db->query($query);
+            $i = 0;
+            while ($voiture2 = $result2->fetch_object('Voiture')) {
+              $id_modele = $voiture2->id_modele;
               if ($i == 0) $first = $id_modele;
               if ($_SESSION['selectedModel'] == $id_modele) $found = true;
-              $lib_modele = $db->result($result, $i, 'lib_modele');
+              $lib_modele = $voiture2->lib_modele;
               echo '<option value="', $id_modele, '"', $_SESSION['selectedModel'] == $id_modele ? ' selected="selected"' : '', '>', $lib_modele, '</option>', "\n";
+              $i++;
             }
             if (!$found) $_SESSION['selectedModel'] = $first;
             ?>
@@ -122,14 +125,15 @@ if (empty($_SESSION['id_utilisateur'])) {
             $query .= ' WHERE mc.fk_modele = %d';
             $query .= ' ORDER BY c.lib_code';
             $query = $db->writeQuery($query, (int) $_SESSION['selectedModel']);
-            $result = $db->query($query);
-            $num_rows = $db->numRows($result);
-            for ($i = 0; $i < $num_rows; $i++) {
-              $id_code = $db->result($result, $i, 'id_code');
+            $result3 = $db->query($query);
+            $i = 0;
+            while ($voiture3 = $result3->fetch_object('Voiture')) {
+              $id_code = $voiture3->id_code;
               if ($i == 0) $first = $id_code;
               if ($_SESSION['selectedCode'] == $id_code) $found = true;
-              $lib_code = $db->result($result, $i, 'lib_code');
+              $lib_code = $voiture3->lib_code;
               echo '<option value="', $id_code, '"', $_SESSION['selectedCode'] == $id_code ? ' selected="selected"' : '', '>', $lib_code, '</option>', "\n";
+              $i++;
             }
             if (!$found) $_SESSION['selectedCode'] = $first;
             ?>
@@ -150,11 +154,10 @@ if (empty($_SESSION['id_utilisateur'])) {
             $query .= ' AND c.id_code NOT IN (SELECT fk_code FROM crz_modele_code WHERE fk_modele = %d)';
             $query .= ' ORDER BY c.lib_code';
             $query = $db->writeQuery($query, (int) $_SESSION['selectedBrand'], (int) $_SESSION['selectedModel']);
-            $result = $db->query($query);
-            $num_rows = $db->numRows($result);
-            for ($i = 0; $i < $num_rows; $i++) {
-              $id_code = $db->result($result, $i, 'id_code');
-              $lib_code = $db->result($result, $i, 'lib_code');
+            $result4 = $db->query($query);
+            while ($voiture4 = $result4->fetch_object('Voiture')) {
+              $id_code = $voiture4->id_code;
+              $lib_code = $voiture4->lib_code;
               echo '<option value="', $id_code, '">', $lib_code, '</option>', "\n";
             }
             ?>
@@ -180,19 +183,20 @@ if (empty($_SESSION['id_utilisateur'])) {
             $query .= ' WHERE mcp.fk_modele = %d AND mcp.fk_code = %d';
             $query .= ' ORDER BY p.puissance';
             $query = $db->writeQuery($query, (int) $_SESSION['selectedModel'], (int) $_SESSION['selectedCode']);
-            $result = $db->query($query);
-            $num_rows = $db->numRows($result);
-            for ($i = 0; $i < $num_rows; $i++) {
-              $id_puissance = $db->result($result, $i, 'id_puissance');
+            $result5 = $db->query($query);
+            $i = 0;
+            while ($voiture5 = $result5->fetch_object('Voiture')) {
+              $id_puissance = $voiture5->id_puissance;
               if ($i == 0) $first = $id_puissance;
               if ($_SESSION['selectedPower'] == $id_puissance) $found = true;
-              $puissance = $db->result($result, $i, 'puissance');
-              $regime_puissance = $db->result($result, $i, 'regime_puissance');
-              $couple = $db->result($result, $i, 'couple');
-              $regime_couple = $db->result($result, $i, 'regime_couple');
+              $puissance = $voiture5->puissance;
+              $regime_puissance = $voiture5->regime_puissance;
+              $couple = $voiture5->couple;
+              $regime_couple = $voiture5->regime_couple;
               echo '<option value="', $id_puissance, '"', $_SESSION['selectedPower'] == $id_puissance ? ' selected="selected"' : '',
                 ' title="', $puissance, ' à ', $regime_puissance, ' rpm / ', $couple, ' à ', $regime_couple, ' rpm">',
                 $puissance, ' ch / ', $couple, ' N.m</option>', "\n";
+              $i++;
             }
             if (!$found) $_SESSION['selectedPower'] = $first;
             ?>
@@ -210,14 +214,13 @@ if (empty($_SESSION['id_utilisateur'])) {
             $query .= ' WHERE id_puissance NOT IN (SELECT fk_puissance FROM crz_modele_code_puissance WHERE fk_modele = %d AND fk_code = %d)';
             $query .= ' ORDER BY puissance';
             $query = $db->writeQuery($query, (int) $_SESSION['selectedModel'], (int) $_SESSION['selectedCode']);
-            $result = $db->query($query);
-            $num_rows = $db->numRows($result);
-            for ($i = 0; $i < $num_rows; $i++) {
-              $id_puissance = $db->result($result, $i, 'id_puissance');
-              $puissance = $db->result($result, $i, 'puissance');
-              $regime_puissance = $db->result($result, $i, 'regime_puissance');
-              $couple = $db->result($result, $i, 'couple');
-              $regime_couple = $db->result($result, $i, 'regime_couple');
+            $result6 = $db->query($query);
+            while ($voiture6 = $result6->fetch_object('Voiture')) {
+              $id_puissance = $voiture6->id_puissance;
+              $puissance = $voiture6->puissance;
+              $regime_puissance = $voiture6->regime_puissance;
+              $couple = $voiture6->couple;
+              $regime_couple = $voiture6->regime_couple;
               echo '<option value="', $id_puissance, '"',
                 ' title="', $puissance, ' à ', $regime_puissance, ' rpm / ', $couple, ' à ', $regime_couple, ' rpm">',
                 $puissance, ' ch / ', $couple, ' N.m</option>', "\n";
@@ -248,14 +251,15 @@ if (empty($_SESSION['id_utilisateur'])) {
             $query .= ' WHERE p.id_puissance = %d';
             $query .= ' ORDER BY m.lib_motorisation';
             $query = $db->writeQuery($query, (int) $_SESSION['selectedPower']);
-            $result = $db->query($query);
-            $num_rows = $db->numRows($result);
-            for ($i = 0; $i < $num_rows; $i++) {
-              $id_motorisation = $db->result($result, $i, 'id_motorisation');
+            $result7 = $db->query($query);
+            $i = 0;
+            while ($voiture7 = $result7->fetch_object('Voiture')) {
+              $id_motorisation = $voiture7->id_motorisation;
               if ($i == 0) $first = $id_motorisation;
               if ($_SESSION['selectedEngine'] == $id_motorisation) $found = true;
-              $lib_motorisation = $db->result($result, $i, 'lib_motorisation');
+              $lib_motorisation = $voiture7->lib_motorisation;
               echo '<option value="', $id_motorisation, '"', $_SESSION['selectedEngine'] == $id_motorisation ? ' selected="selected"' : '', '>', $lib_motorisation, '</option>', "\n";
+              $i++;
             }
             if (!$found) $_SESSION['selectedEngine'] = $first;
             ?>
@@ -273,11 +277,10 @@ if (empty($_SESSION['id_utilisateur'])) {
             $query .= ' WHERE id_motorisation NOT IN (SELECT fk_motorisation FROM crz_puissance WHERE id_puissance = %d)';
             $query .= ' ORDER BY lib_motorisation';
             $query = $db->writeQuery($query, (int) $_SESSION['selectedPower']);
-            $result = $db->query($query);
-            $num_rows = $db->numRows($result);
-            for ($i = 0; $i < $num_rows; $i++) {
-              $id_motorisation = $db->result($result, $i, 'id_motorisation');
-              $lib_motorisation = $db->result($result, $i, 'lib_motorisation');
+            $result8 = $db->query($query);
+            while ($voiture8 = $result8->fetch_object('Voiture')) {
+              $id_motorisation = $voiture8->id_motorisation;
+              $lib_motorisation = $voiture8->lib_motorisation;
               echo '<option value="', $id_motorisation, '">', $lib_motorisation, '</option>', "\n";
             }
             ?>
@@ -342,15 +345,16 @@ if (empty($_SESSION['id_utilisateur'])) {
             $query .= ' WHERE mcmb.fk_modele = %d AND mcmb.fk_code = %d AND mcmb.fk_motorisation = %d';
             $query .= ' ORDER BY b.lib_boite';
             $query = $db->writeQuery($query, (int) $_SESSION['selectedModel'], (int) $_SESSION['selectedCode'], (int) $_SESSION['selectedEngine']);
-            $result = $db->query($query);
-            $num_rows = $db->numRows($result);
-            for ($i = 0; $i < $num_rows; $i++) {
-              $id_boite = $db->result($result, $i, 'id_boite');
+            $result9 = $db->query($query);
+            $i = 0;
+            while ($voiture9 = $result9->fetch_object('Voiture')) {
+              $id_boite = $voiture9->id_boite;
               if ($i == 0) $first = $id_boite;
               if ($_SESSION['selectedGearbox'] == $id_boite) $found = true;
-              $lib_boite = $db->result($result, $i, 'lib_boite');
+              $lib_boite = $voiture9->lib_boite;
               echo '<option value="', $id_boite, '"', $_SESSION['selectedGearbox'] == $id_boite ? ' selected="selected"' : '','>',
                 $lib_boite, '</option>', "\n";
+              $i++;
             }
             if (!$found) $_SESSION['selectedGearbox'] = $first;
             ?>
@@ -368,11 +372,10 @@ if (empty($_SESSION['id_utilisateur'])) {
             $query .= ' WHERE id_boite NOT IN (SELECT fk_boite FROM crz_modele_code_motorisation_boite WHERE fk_modele = %d AND fk_code = %d AND fk_motorisation = %d)';
             $query .= ' ORDER BY lib_boite';
             $query = $db->writeQuery($query, (int) $_SESSION['selectedModel'], (int) $_SESSION['selectedCode'], (int) $_SESSION['selectedEngine']);
-            $result = $db->query($query);
-            $num_rows = $db->numRows($result);
-            for ($i = 0; $i < $num_rows; $i++) {
-              $id_boite = $db->result($result, $i, 'id_boite');
-              $lib_boite = $db->result($result, $i, 'lib_boite');
+            $result10 = $db->query($query);
+            while ($voiture10 = $result10->fetch_object('Voiture')) {
+              $id_boite = $voiture10->id_boite;
+              $lib_boite = $voiture10->lib_boite;
               echo '<option value="', $id_boite, '">', $lib_boite, '</option>', "\n";
             }
             ?>

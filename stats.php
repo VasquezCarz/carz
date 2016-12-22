@@ -19,10 +19,10 @@
     <?php
     include 'config/carz.conf.php';
     include PATH_SCRIPTS.'/php/Database.class.php';
-	
+  
     require_once(PATH_SCRIPTS.'/php/Stats1.class.php');
     require_once(PATH_SCRIPTS.'/php/Stats2.class.php');
-    require_once(PATH_SCRIPTS.'/php/Stats3.class.php');	
+    require_once(PATH_SCRIPTS.'/php/Stats3.class.php'); 
     ?>
     <header>
       <?php include "header.inc.php"; ?>
@@ -101,22 +101,22 @@
             <td><?php echo $stats1->vmax; ?></td>
             <td><?php echo $stats1->vsum; ?></td>
           </tr>
-        </table>		  
-		  <?php
+        </table>      
+      <?php
         }
       }
-						
+            
       $query = 'SELECT m.energie, COUNT(v.id_voiture) AS nb_energie';
       $query .= ' FROM crz_voiture v';
       $query .= ' INNER JOIN crz_puissance p ON v.fk_puissance = p.id_puissance';
       $query .= ' INNER JOIN crz_motorisation m ON p.fk_motorisation = m.id_motorisation';
       $query .= ' GROUP BY m.energie';
       
-      if ($result = $db->query($query)) {				
+      if ($result = $db->query($query)) {       
       ?>
-      <hr/>
-      <div style="margin-top: 20px; height: 320px;">
-	  
+      <hr />
+      
+      <div style="margin-top: 20px; height: 320px;">    
         <div style="width:300px; height: 300px; float: left;">
         <table class="border stats">
           <tr><th>Energie</th><th>Nb</th><th>Taux</th></tr>
@@ -137,7 +137,9 @@
           <canvas id="myChart" width="300" height="300"></canvas>
         </div>
       </div>
-      <hr/>
+      
+      <hr />
+      
       <div>
         <?php
         }
@@ -165,30 +167,31 @@
         ?>
       </div>
     </section>
+    
     <script>     
-	  var data = {
-	    labels: [
-		<?php echo $labels; ?>
-		/*"Red",
-		"Blue",
-		"Yellow"*/
-	    ],
-	    datasets: [{
-		  label: '# of cars',
-	      data: [/*300, 50, 100*/<?php echo $valeurs; ?>],
+    var data = {
+      labels: [
+    <?php echo $labels; ?>
+    /*"Red",
+    "Blue",
+    "Yellow"*/
+      ],
+      datasets: [{
+      label: '# of cars',
+        data: [/*300, 50, 100*/<?php echo $valeurs; ?>],
           backgroundColor: [
-				"#FF6384",
-				"#36A2EB",
-				"#FFCE56"
+        "#FF6384",
+        "#36A2EB",
+        "#FFCE56"
           ],
           hoverBackgroundColor: [
-				"#FF6384",
-				"#36A2EB",
-				"#FFCE56"
+        "#FF6384",
+        "#36A2EB",
+        "#FFCE56"
           ]
-	    }]
-	  };
-	
+      }]
+    };
+  
       var options = {
         title: {
           display: true,
@@ -197,13 +200,14 @@
         }
      };
 
-	  var ctx = document.getElementById("myChart");
-	  var myPieChart = new Chart(ctx,{
-		type: 'doughnut',
-		data: data ,
-		options: options
-	  });
-    </script>     
+    var ctx = document.getElementById("myChart");
+    var myPieChart = new Chart(ctx,{
+    type: 'doughnut',
+    data: data ,
+    options: options
+    });
+    </script>
+    
     <footer>
       <?php include "footer.inc.php"; ?>
     </footer>

@@ -19,7 +19,7 @@ $_SESSION['selectedPower'] = $_POST['selectedPower'];
 $_SESSION['selectedEngine'] = $_POST['selectedEngine'];
 $_SESSION['selectedGearbox'] = $_POST['selectedGearbox'];
 
-if ($_POST['updateCar'] == 'Enregistrer') {
+if ($_POST['updateCar'] == 'Enregistrer' && !empty($_POST['selectedBrand']) && !empty($_POST['selectedModel']) && !empty($_POST['selectedCode']) && !empty($_POST['selectedPower']) && !empty($_POST['selectedEngine']) && !empty($_POST['selectedGearbox'])) {
   $query = 'UPDATE crz_voiture';
   $query .= ' SET lib_voiture = %s, fk_modele = %d, fk_code = %d, fk_boite = %d, fk_puissance = %d, annee = %d';
   $query .= ' WHERE id_voiture = %d';
