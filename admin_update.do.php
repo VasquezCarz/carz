@@ -6,7 +6,7 @@ if (empty($_SESSION['id_utilisateur'])) {
   exit();
 }
 
-if(isset($_POST['selectedGroup'])) $_SESSION['selectedGroup'] = $_POST['selectedGroup'];
+if (isset($_POST['selectedGroup'])) $_SESSION['selectedGroup'] = $_POST['selectedGroup'];
 
 include 'config/carz.conf.php';
 include PATH_SCRIPTS.'/php/Database.class.php';

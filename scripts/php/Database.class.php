@@ -124,34 +124,22 @@ class Database {
   }
   //-----------------------------------------------------
 
-  //-------- Result -------------------------------------
-  /*function result($result, $index, $field) {
-    return mysql_result($result, $index, $field);
-  }*/
-  //-----------------------------------------------------
-
   //-------- Fetch row ----------------------------------
-	/*function fetchRow($result) {
-		return mysql_fetch_row($result);
-	}*/
+	function fetchRow($result) {
+		return $result->fetch_row();
+	}
 	//-----------------------------------------------------
 
-	//-------- Fetch object -------------------------------
-  /*function fetchObject($result) {
-    return mysql_fetch_object($result);
-  }*/
-  //-----------------------------------------------------
-
-  //-------- Fetch array --------------------------------
-  /*function fetchArray($result) {
-    return mysql_fetch_array($result);
-  }*/
+	//-------- Fetch array --------------------------------
+  function fetchArray($result) {
+    return $result->fetch_array();
+  }
   //-----------------------------------------------------
 
 	//-------- Fetch assoc --------------------------------
-  /*function fetchAssoc($result) {
-    return mysql_fetch_assoc($result);
-  }*/
+  function fetchAssoc($result) {
+    return $result->fetch_assoc();
+  }
   //-----------------------------------------------------
 
   //-------- Get the last inserted id -------------------
@@ -160,13 +148,7 @@ class Database {
   }
   //-----------------------------------------------------
 
-  //-------- Get MySQL info -----------------------------
-	/*function info() {
-    return mysql_info($this->lnk);
-  }*/
-	//-----------------------------------------------------
-
-	//-------- Get the number of affected rows ------------
+  //-------- Get the number of affected rows ------------
 	function affectedRows() {
 		return $this->lnk->affected_rows;
 	}

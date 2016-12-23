@@ -56,11 +56,11 @@ a img {
   vertical-align: middle;
 }
 
-hr{
-	margin-top:10px;
-	border: 0;
-    height: 1px;
-    background-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0));
+hr {
+  margin-top: 10px;
+  border: 0;
+  height: 1px;
+  background-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0));
 }
 
 .thick {
@@ -97,16 +97,16 @@ table td img.avatar {
   height: 30px;
 }
 
-table th.stats_label{
-	width:100px;
+table th.stats_label {
+  width: 100px;
 }
 
-table th.stats_nb{
-	width:25px;
+table th.stats_nb {
+  width: 25px;
 }
 
-table th.stats_taux{
-	width:50px;
+table th.stats_taux {
+  width: 50px;
 }
 
 table.listing tr:nth-child(even) {
@@ -118,9 +118,9 @@ table.stats td {
   padding: 5px;
 }
 
-table.stats th{
-	background-color:#E6E6E6;
-	padding: 5px;
+table.stats th {
+  background-color:#E6E6E6;
+  padding: 5px;
 }
 
 span.success {
@@ -176,53 +176,49 @@ div.groups {
   width: 500px;
 }
 
-
-div#nav {
-  /*margin-bottom: 15px;*/
-  border-top: 1px gray solid;
-  border-bottom: 1px gray solid;
-  background-color: #FFFFFF;
-  padding: 5px;
-  height: 70px;
-}
-
-div#nav_links {
-  margin-top: 10px;
-  margin-bottom: 15px;
-  padding-bottom: 5px;
-  border-bottom: 1px #F5A9A9 solid;
-}
-
-div#nav_links a {
-  text-decoration: none;
-  padding: 5px;
-  background-color: #F5A9A9;
-  color: #FFFFFF;
-  font-size:1.2em;
-}
-
-div#nav_links a:hover {
-  text-decoration: underline;
-  background-color: #F78181;
-}
-
-div#nav_auth {
-  margin-top: 5px;  
-}
-
-div.pop-up{
+div.pop-up {
   border: 1px gray dotted;
   width: 300px;
-  margin-bottom:5px;
+  margin-bottom: 5px;
   padding: 5px;
 }
 
-p.identite{
-	margin:0;
-	padding: 0;
-	font-style: italic;
+p.identite {
+  margin: 0;
+  padding: 0;
+  font-style: italic;
 }
 
 ul {
   padding-left: 15px;
+}
+
+ul.tabs {
+  height: 24px;
+  padding-left: 15px;
+  list-style-type: none;
+  border-bottom: solid gray 1px;
+}
+
+ul.tabs li {
+  float: left;
+  background-color: #BDBDBD;
+  border: solid gray 1px;
+  padding: 5px;
+}
+
+ul.tabs li a {
+  color: #000000;
+  text-decoration: none;
+}
+
+ul.tabs li:hover {
+  background-color: #FFFFFF;
+}
+
+body#home li#home_nav,
+body#stats li#stats_nav,
+body#trombi li#trombi_nav {
+  background-color: #FFFFFF;
+  border-bottom: none;
 }

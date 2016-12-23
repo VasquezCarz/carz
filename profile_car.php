@@ -9,7 +9,7 @@ if (empty($_SESSION['id_utilisateur'])) {
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Carz - Mon compte > Créer une voiture</title>
+    <title>Carz - Profil > Créer une voiture</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <meta charset="UTF-8" />
     <link rel="stylesheet" type="text/css" href="scripts/css/style.css" />
@@ -21,8 +21,8 @@ if (empty($_SESSION['id_utilisateur'])) {
   	</header>
     
     <nav>
-      Mon compte > Créer une voiture
       <?php include 'nav.inc.php'; ?>
+      <h2>Profil > Créer une voiture</h2>
     </nav>
     
     <section>
@@ -42,6 +42,7 @@ if (empty($_SESSION['id_utilisateur'])) {
           <legend>Marque</legend>
           <select name="selectedBrand" onchange="document.frmCar.submit();" class="thick">
             <?php
+            $selectedBrand = empty($_SESSION['selectedBrand']) ? '' : $_SESSION['selectedBrand'];
             $first = 0;
             $found = false;
             $query = 'SELECT id_marque, lib_marque FROM crz_marque ORDER BY lib_marque';
@@ -50,9 +51,9 @@ if (empty($_SESSION['id_utilisateur'])) {
             while ($voiture = $result->fetch_object('Voiture')) {
               $id_marque = $voiture->id_marque;
               if ($i == 0) $first = $id_marque;
-              if ($_SESSION['selectedBrand'] == $id_marque) $found = true;
+              if ($selectedBrand == $id_marque) $found = true;
               $lib_marque = $voiture->lib_marque;
-              echo '<option value="', $id_marque, '"', $_SESSION['selectedBrand'] == $id_marque ? ' selected="selected"' : '', '>', $lib_marque, '</option>', "\n";
+              echo '<option value="', $id_marque, '"', $selectedBrand == $id_marque ? ' selected="selected"' : '', '>', $lib_marque, '</option>', "\n";
               $i++;
             }
             if (!$found) $_SESSION['selectedBrand'] = $first;
@@ -83,17 +84,18 @@ if (empty($_SESSION['id_utilisateur'])) {
           <legend>Modèle</legend>
           <select name="selectedModel" onchange="document.frmCar.submit();" class="thick">
             <?php
+            $selectedModel = empty($_SESSION['selectedModel']) ? '' : $_SESSION['selectedModel'];
             $first = 0;
             $found = false;
-            $query = $db->writeQuery('SELECT id_modele, lib_modele FROM crz_modele WHERE fk_marque = %d ORDER BY lib_modele', (int) $_SESSION['selectedBrand']);
+            $query = $db->writeQuery('SELECT id_modele, lib_modele FROM crz_modele WHERE fk_marque = %d ORDER BY lib_modele', (int) $selectedBrand);
             $result2 = $db->query($query);
             $i = 0;
             while ($voiture2 = $result2->fetch_object('Voiture')) {
               $id_modele = $voiture2->id_modele;
               if ($i == 0) $first = $id_modele;
-              if ($_SESSION['selectedModel'] == $id_modele) $found = true;
+              if ($selectedModel == $id_modele) $found = true;
               $lib_modele = $voiture2->lib_modele;
-              echo '<option value="', $id_modele, '"', $_SESSION['selectedModel'] == $id_modele ? ' selected="selected"' : '', '>', $lib_modele, '</option>', "\n";
+              echo '<option value="', $id_modele, '"', $selectedModel == $id_modele ? ' selected="selected"' : '', '>', $lib_modele, '</option>', "\n";
               $i++;
             }
             if (!$found) $_SESSION['selectedModel'] = $first;

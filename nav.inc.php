@@ -1,6 +1,6 @@
 <div id="nav">
 
-  <div id="nav_auth">
+  <div>
     <?php
     // Contrôle de la variable de session 'login'
     // Si elle est vide alors on affiche le formulaire d'authentification
@@ -18,10 +18,10 @@
     // Sinon on affiche le lien de déconnexion
     else {
     ?>
-    <div style="width:150px; float:right; ">
-      <a href="profile.php"><img src="graphics/user.png" title="Mon compte" />[<?php echo $_SESSION['login'] ?>]</a>
-      <a href="admin.php"><img src="graphics/cog.png" title="Administration" /></a>
-      <a href="logout.do.php"><img src="graphics/cancel.png" title="Se déconnecter" /></a>
+    <div style="float: right;">
+      <a href="profile.php"><img src="graphics/user.png" title="Profil" /> Profil [<?php echo $_SESSION['login'] ?>]</a>
+      <a href="admin.php"><img src="graphics/cog.png" title="Administration" /> Administration</a>
+      <a href="logout.do.php"><img src="graphics/cancel.png" title="Déconnexion" /> Déconnexion</a>
     </div>
     <?php
     }
@@ -31,9 +31,10 @@
     $_SESSION['msg'] = '';
     ?>
   </div>
-  <div id="nav_links">
-    <a href="index.php">Accueil</a>
-    <a href="stats.php">Statistiques</a>
-	<a href="trombi.php">Trombinoscope</a>
-  </div>
+  
+  <ul class="tabs">
+    <li id="home_nav"><a href="index.php">Accueil</a></li>
+    <li id="stats_nav"><a href="stats.php">Statistiques</a></li>
+    <li id="trombi_nav"><a href="trombi.php">Trombinoscope</a></li>
+  </ul>
 </div>

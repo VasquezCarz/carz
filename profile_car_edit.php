@@ -9,7 +9,7 @@ if (empty($_SESSION['id_utilisateur'])) {
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Carz - Mon compte > Ma voiture</title>
+    <title>Carz - Profil > Ma voiture</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <meta charset="UTF-8" />
     <link rel="stylesheet" type="text/css" href="scripts/css/style.css" />
@@ -21,8 +21,8 @@ if (empty($_SESSION['id_utilisateur'])) {
     </header>
   
     <nav>
-      Mon compte > Ma voiture
       <?php include 'nav.inc.php'; ?>
+      <h2>Profil > Ma voiture</h2>
     </nav>
     
     <section>

@@ -13,15 +13,14 @@
     </header>
     
     <nav>
-      Mot de passe oublié
       <?php include 'nav.inc.php'; ?>
+      <h2>Mot de passe oublié</h2>
     </nav>
   
     <section>
-      <br />
       <fieldset>
         <legend>Mot de passe oublié</legend>
-        <form name="frmForgottenPassword" action="user_send_password_reset.php" method="post">
+        <form name="frmForgottenPassword" action="user_send_password_reset.do.php" method="post">
           E-mail :
           <input type="text" name="txtMail" size="30" />
           <input type="submit" value="Envoyer" />

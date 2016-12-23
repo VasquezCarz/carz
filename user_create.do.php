@@ -24,23 +24,15 @@ $db->connect();
 
 $query = 'SELECT id_utilisateur FROM crz_utilisateur WHERE UPPER(login) = %s';
 $query = $db->writeQuery($query, trim(strtoupper($_POST['login'])));
-if($result = $db->query($query)){
-	if($user= $result->fetch_object('User')){
-		$_SESSION['msg'] = '<span class="error">Ce login existe déjà !</span>';
-		$db->close();
-		header('Location: user_registration.php');
-		exit();
-	}
+if ($result = $db->query($query)) {
+  if ($user = $result->fetch_object('User')){
+    $_SESSION['msg'] = '<span class="error">Ce login existe déjà !</span>';
+    $db->close();
+    header('Location: user_registration.php');
+    exit();
+  }
 }
-	
-/*$result = $db->query($query);
-if ($db->numRows($result) > 0) {
-  $_SESSION['msg'] = '<span class="error">Ce login existe déjà !</span>';
-  $db->close();
-  header('Location: user_registration.php');
-  exit();
-}*/
-
+  
 if ($_POST['password1'] != $_POST['password2']) {
   $_SESSION['msg'] = '<span class="error">Les mots de passe ne correspondent pas !</span>';
   $_SESSION['password1'] = '';
@@ -61,6 +53,6 @@ $_SESSION['id_utilisateur'] = $db->getInsertId();
 $db->close();
 
 // envoyer le mail d'activation
-header('Location: user_send_activation.php');
+header('Location: user_send_activation.do.php');
 exit();
 ?>

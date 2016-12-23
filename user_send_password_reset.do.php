@@ -8,13 +8,12 @@ include PATH_SCRIPTS.'/php/util.inc.php';
 $db = new Database();
 $db->connect();
 
-// TODO
 if (trim($_POST['txtMail']) != '') {
   $query = 'SELECT id_utilisateur, login, mail FROM crz_utilisateur WHERE mail = %s';
   $query = $db->writeQuery($query, trim($_POST['txtMail']));
   $result = $db->query($query);
-  $num_rows = $db->numRows($result);
-  $data = $db->fetchAssoc($result);
+  $num_rows = $result->num_rows;
+  $data = $result->fetch_assoc();
   if ($num_rows == 1) {
     $date_expiration = date('Y-m-d H:i:s', strtotime('+24 hours'));
     $hash = md5(random_str());

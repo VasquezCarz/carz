@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Carz - Index</title>
+    <title>Carz - Accueil</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <meta charset="UTF-8" />
     <meta name="title" content="Carz" />
@@ -12,12 +12,12 @@
     <meta name="robots" content="index, follow" />
     <!--<link rel="icon" type="image/png" href="graphics/favicon.png" />-->
     <link rel="stylesheet" type="text/css" href="scripts/css/style.css" />
-	<link rel="stylesheet" type="text/css" href="scripts/css/popup.css" />
-	<script src="https://code.jquery.com/jquery-1.10.2.js"></script>
-	<script src="scripts/js/css-pop.js"></script>
+    <link rel="stylesheet" type="text/css" href="scripts/css/popup.css" />
+    <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+    <script src="scripts/js/css-pop.js"></script>
   </head>
 
-  <body>
+  <body id="home">
     <?php
     include 'config/carz.conf.php';
     include PATH_SCRIPTS.'/php/Database.class.php';
@@ -32,7 +32,6 @@
     
     <nav>
       <?php include 'nav.inc.php'; ?>
-      <h2>Accueil</h2>
     </nav>
     
     <section>
@@ -41,12 +40,12 @@
       $db->connect();
       $log = new MyLogPHP('./log/debug.log.csv', ';');
       ?>
-      <div id="blanket" style="display:none"></div>
-      <div id="popUpDiv" style="display:none">
-	    <a href="#" onclick="popup('popUpDiv')" >Fermer</a>
-	    <img style="display: block;margin-left: auto; margin-right: auto;" id="mainImg" src=""/>
-	  
-	  </div>
+      <div id="blanket" style="display: none"></div>
+      <div id="popUpDiv" style="display: none">
+        <a href="#" onclick="popup('popUpDiv')">Fermer</a>
+        <img style="display: block; margin-left: auto; margin-right: auto;" id="mainImg" src="" />
+      </div>
+      
       <fieldset>
         <legend>
           <form name="frmGroup" action="index.php" method="post">
@@ -92,18 +91,18 @@
           $query = $db->writeQuery($query, (int) $id_groupe);
           
           if ($result = $db->query($query)) {
-			$ident=0;
+            $ident = 0;
             while ($voiture = $result->fetch_object('Voiture')) {           
               $admin = empty($_SESSION['admin']) ? 0 : $_SESSION['admin'];
               
               echo '<tr><td>', $voiture->lib_marque, '</td><td>', $voiture->lib_modele, '</td><td>', $voiture->annee, '</td><td>', $voiture->lib_code,
                 '</td><td>', $voiture->lib_motorisation, '</td><td>', $voiture->energie, '</td><td>', $voiture->puissance, '</td><td>', $voiture->couple,
-                '</td><td>', $voiture->lib_boite, '</td><td><span style=\"\" title="', $voiture->lib_voiture, '">', $voiture->login, '<p class="identite">' , $voiture->prenom ,'</p></span></td><td>',
-				'<img style="cursor:pointer;" id="img', $ident, '" class="avatar" src="uploads/',
-                str_pad($voiture->id_utilisateur, 10, '0', STR_PAD_LEFT), '/thumbnail.jpg" onerror=this.src=\'graphics/default.png\' onclick=popup(\'popUpDiv\',\'uploads/', str_pad($voiture->id_utilisateur, 10, '0', STR_PAD_LEFT) , '/avatar.jpg\') /> </td>',
+                '</td><td>', $voiture->lib_boite, '</td><td><span style=\"\" title="', $voiture->lib_voiture, '">', $voiture->login, '<p class="identite">',
+                $voiture->prenom, '</p></span></td><td><img style="cursor:pointer;" id="img', $ident, '" class="avatar" src="uploads/',
+                str_pad($voiture->id_utilisateur, 10, '0', STR_PAD_LEFT), '/thumbnail.jpg" onerror="this.src=\'graphics/default.png\'"',
+                ' onclick="popup(\'popUpDiv\', \'uploads/', str_pad($voiture->id_utilisateur, 10, '0', STR_PAD_LEFT) , '/avatar.jpg\')"" /></td>',
                 $admin == '1' ? '<td><a href="profile_car_edit.php?car_id='.$voiture->id_voiture.'"><img  src="graphics/pencil.png" /></a></td>' : '',
-                '</tr>', "\n";
-				
+                '</tr>', "\n";        
               $ident++;
             }
           }
@@ -115,9 +114,9 @@
       $db->close();
       ?>
     </section>
-    <script>
-      
-    </script>
+    
+    <script></script>
+    
     <footer>
       <?php include 'footer.inc.php'; ?>
     </footer>
