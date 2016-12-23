@@ -22,6 +22,8 @@ class Voiture {
 	public $id_boite;
 	public $fk_voiture;
 	public $fk_groupe;
+	public $prenom;
+	public $nom;
 	
 	public function info(){
 		return '#' . $this->id_voiture . " - libelle " . $this->lib_voiture;
