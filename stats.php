@@ -19,10 +19,10 @@
     <?php
     include 'config/carz.conf.php';
     include PATH_SCRIPTS.'/php/Database.class.php';
-	
+  
     require_once(PATH_SCRIPTS.'/php/Stats1.class.php');
     require_once(PATH_SCRIPTS.'/php/Stats2.class.php');
-    require_once(PATH_SCRIPTS.'/php/Stats3.class.php');	
+    require_once(PATH_SCRIPTS.'/php/Stats3.class.php'); 
     ?>
     <header>
       <?php include "header.inc.php"; ?>
@@ -112,18 +112,18 @@
 		  <?php
         }
       }
-						
+            
       $query = 'SELECT m.energie, COUNT(v.id_voiture) AS nb_energie';
       $query .= ' FROM crz_voiture v';
       $query .= ' INNER JOIN crz_puissance p ON v.fk_puissance = p.id_puissance';
       $query .= ' INNER JOIN crz_motorisation m ON p.fk_motorisation = m.id_motorisation';
       $query .= ' GROUP BY m.energie';
       
-      if ($result = $db->query($query)) {				
+      if ($result = $db->query($query)) {       
       ?>
-      <hr/>
-      <div style="margin-top: 20px; height: 320px;">
-	  
+      <hr />
+      
+      <div style="margin-top: 20px; height: 320px;">    
         <div style="width:300px; height: 300px; float: left;">
         <table class="border stats">
           <tr><th class="stats_label">Energie</th><th class="stats_nb">Nb</th><th class="stats_taux">Taux</th></tr>
@@ -144,8 +144,10 @@
           <canvas id="myChart" width="300" height="300"></canvas>
         </div>
       </div>
-      <hr/>
+
+      <hr />
       <div style="margin-top: 20px; height: 320px;">
+
         <?php
         }
       
@@ -182,28 +184,31 @@
         ?>
       </div>
     </section>
+    
     <script>     
-	  var data = {
-	    labels: [
-		<?php echo $labels; ?>
+
+	var data = {
+	  labels: [
+    <?php echo $labels; ?>
 		
-	    ],
-	    datasets: [{
-		  label: '# of cars',
-	      data: [<?php echo $valeurs; ?>],
+	  ],
+	  datasets: [{
+		label: '# of cars',
+	    data: [<?php echo $valeurs; ?>],
+
           backgroundColor: [
-				"#FF6384",
-				"#36A2EB",
-				"#FFCE56"
+        "#FF6384",
+        "#36A2EB",
+        "#FFCE56"
           ],
           hoverBackgroundColor: [
-				"#FF6384",
-				"#36A2EB",
-				"#FFCE56"
+        "#FF6384",
+        "#36A2EB",
+        "#FFCE56"
           ]
-	    }]
-	  };
-	
+      }]
+    };
+  
       var options = {
         title: {
           display: true,
@@ -212,81 +217,79 @@
         }
       };
 
-	  var ctx = document.getElementById("myChart");
-	  var myPieChart = new Chart(ctx,{
-		type: 'doughnut',
-		data: data ,
-		options: options
-	  });
-	  
-	  
-	  // Graphique n°2
-	  var data2 = {
-	    labels: [
-		<?php echo $labels2; ?>
-		
-	    ],
-	    datasets: [{
-		  label: '# of cars',
-	      data: [<?php echo $valeurs2; ?>],
-          backgroundColor: [
-				"#FF6384",
-				"#36A2EB",
-				"#FFCE56"
-          ],
-          hoverBackgroundColor: [
-				"#FF6384",
-				"#36A2EB",
-				"#FFCE56"
-          ]
-	    }]
-	  };
-	  
-	  var options2 = {
-        title: {
-          display: true,
-          text: 'Suralimentation',
-          fullWidth: true
-        }
-      };
-	  
-	  
-	  var ctx2 = document.getElementById("myChart2");
-	  var myPieChart = new Chart(ctx2,{
-		type: 'doughnut',
-		data: data2 ,
-		options: options2
-	  });
-	  
-	  // Graphique n°3 :
 
-	  var data3 = {
-        labels: ["Puiss. Min.", "Puiss. Max.", "Puiss. Moy."],
-        datasets: [
-        {
-          label: "Puissance des véhicules du groupe",
-          backgroundColor: [
-                'rgba(255, 99, 132, 0.2)',
-                'rgba(54, 162, 235, 0.2)',
-                'rgba(255, 206, 86, 0.2)'
-          ],
-          borderColor: [
-                'rgba(255,99,132,1)',
-                'rgba(54, 162, 235, 1)',
-                'rgba(255, 206, 86, 1)'
-          ],
-          borderWidth: 1,
-          data: [<?php echo $stats1->pmin ?>, <?php echo $stats1->pmax ?>, <?php echo $stats1->pavg ?>],
-        }
-        ]
-      };
+	var ctx = document.getElementById("myChart");
+	var myPieChart = new Chart(ctx,{
+      type: 'doughnut',
+      data: data ,
+      options: options
+    });
 	  
-      var ctx3 = document.getElementById("myChart3");	  
-	  var myBarChart = new Chart(ctx3, {
-        type: 'bar',
-        data: data3
-      });
+	  
+	// Graphique n°2
+	var data2 = {
+	  labels: [
+    <?php echo $labels2; ?>
+      ],
+	  datasets: [{
+        label: '# of cars',
+        data: [<?php echo $valeurs2; ?>],
+        backgroundColor: [
+          "#FF6384",
+          "#36A2EB",
+          "#FFCE56"
+        ],
+        hoverBackgroundColor: [
+          "#FF6384",
+          "#36A2EB",
+          "#FFCE56"
+        ]
+      }]
+    };
+	  
+    var options2 = {
+      title: {
+        display: true,
+        text: 'Suralimentation',
+        fullWidth: true
+      }
+    };
+	  
+	  
+    var ctx2 = document.getElementById("myChart2");
+    var myPieChart = new Chart(ctx2,{
+      type: 'doughnut',
+      data: data2 ,
+      options: options2
+    });
+	  
+    // Graphique n°3 :
+    var data3 = {
+      labels: ["Puiss. Min.", "Puiss. Max.", "Puiss. Moy."],
+      datasets: [{
+        label: "Puissance des véhicules du groupe",
+        backgroundColor: [
+          'rgba(255, 99, 132, 0.2)',
+          'rgba(54, 162, 235, 0.2)',
+          'rgba(255, 206, 86, 0.2)'
+        ],
+        borderColor: [
+          'rgba(255,99,132,1)',
+          'rgba(54, 162, 235, 1)',
+          'rgba(255, 206, 86, 1)'
+        ],
+        borderWidth: 1,
+        data: [<?php echo $stats1->pmin ?>, <?php echo $stats1->pmax ?>, <?php echo $stats1->pavg ?>],
+      }]
+    };
+	  
+    var ctx3 = document.getElementById("myChart3");	  
+	var myBarChart = new Chart(ctx3, {
+      type: 'bar',
+      data: data3
+    });
     </script>     
+
     <footer>
       <?php include "footer.inc.php"; ?>
     </footer>

@@ -45,12 +45,15 @@ footer {
   border-radius: 0 0 5px 5px;
 }
 
-h2{
+h2 {
   color: #6E6E6E;
   margin-left: 20px;
   border-bottom: 1px #BDBDBD solid;
   width: 700px;
-	
+}
+
+a img {
+  vertical-align: middle;
 }
 
 hr{
@@ -173,18 +176,24 @@ div.groups {
   width: 500px;
 }
 
-div#nav{
 
+div#nav {
+  /*margin-bottom: 15px;*/
+  border-top: 1px gray solid;
+  border-bottom: 1px gray solid;
+  background-color: #FFFFFF;
+  padding: 5px;
   height: 70px;
 }
 
-div#nav_links{
-  margin-top:20px;
+div#nav_links {
+  margin-top: 10px;
+  margin-bottom: 15px;
+  padding-bottom: 5px;
   border-bottom: 1px #F5A9A9 solid;
-  padding-bottom:5px;
 }
 
-div#nav_links a{
+div#nav_links a {
   text-decoration: none;
   padding: 5px;
   background-color: #F5A9A9;
@@ -192,14 +201,13 @@ div#nav_links a{
   font-size:1.2em;
 }
 
-div#nav_links a:hover{
+div#nav_links a:hover {
   text-decoration: underline;
   background-color: #F78181;
 }
 
-div#nav_auth{
-  margin-top: 5px;
-  
+div#nav_auth {
+  margin-top: 5px;  
 }
 
 div.pop-up{

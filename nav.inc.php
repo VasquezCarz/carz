@@ -19,9 +19,9 @@
     else {
     ?>
     <div style="width:150px; float:right; ">
-      <a href="profile.php"><img src="graphics/people.png" style="width:20px;"/>[<?php echo $_SESSION['login'] ?>]</a>
-      <a href="admin.php"><img src="graphics/settings.png" style="width:20px;"/></a>
-      <a href="logout.do.php"><img src="graphics/logout.png" style="width:20px;"/></a>
+      <a href="profile.php"><img src="graphics/user.png" title="Mon compte" />[<?php echo $_SESSION['login'] ?>]</a>
+      <a href="admin.php"><img src="graphics/cog.png" title="Administration" /></a>
+      <a href="logout.do.php"><img src="graphics/cancel.png" title="Se déconnecter" /></a>
     </div>
     <?php
     }
