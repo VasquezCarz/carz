@@ -12,7 +12,7 @@
     <meta name="robots" content="index, follow" />
     <!--<link rel="icon" type="image/png" href="graphics/favicon.png" />-->
     <link rel="stylesheet" type="text/css" href="scripts/css/style.css" />
-    <script src="scripts/js/Chart.min.js"></script>
+    <script src="scripts/js/Chart.js/Chart.min.js"></script>
   </head>
 
   <body id="stats">
@@ -52,13 +52,13 @@
         if ($stats1 = $result->fetch_object('Stats1')) {
       ?>  
       <div style="margin-top: 20px; height: 320px;">  
-        <div style="width:400px; height: 300px; float: left;">    
+        <div style="width: 400px; height: 300px; float: left;">    
           <table class="border stats">
             <tr>
               <td></td>
-              <th class="stats_taux">Min</th>
-              <th class="stats_taux">Moy</th>
-              <th class="stats_taux">Max</th>
+              <th class="stats_taux">Min.</th>
+              <th class="stats_taux">Moy.</th>
+              <th class="stats_taux">Max.</th>
               <th class="stats_taux">Total</th>
             </tr>
             <tr>
@@ -105,7 +105,7 @@
             </tr>
           </table>
         </div>
-        <div style="width:300px; height: 300px; float: left;">
+        <div style="width: 300px; height: 300px; float: left;">
           <canvas id="myChart3" width="300" height="300"></canvas>
         </div>    
       </div>    
@@ -162,7 +162,7 @@
         
         if ($result = $db->query($query)) {
         ?>
-          <div style="width:300px; height: 300px; float: left;">
+          <div style="width: 300px; height: 300px; float: left;">
             <table class="border stats">
               <tr><th class="stats_label">Suralimentation</th><th class="stats_nb">Nb</th><th class="stats_taux">Taux</th></tr>
               <?php
@@ -178,7 +178,7 @@
               ?>
             </table>
           </div>
-          <div style="width:300px; height: 300px; float: left;">
+          <div style="width: 300px; height: 300px; float: left;">
             <canvas id="myChart2" width="300" height="300"></canvas>
           </div>
         <?php
@@ -244,7 +244,7 @@
     var data3 = {
       labels: ["Puiss. Min.", "Puiss. Max.", "Puiss. Moy."],
       datasets: [{
-        label: "Puissance des véhicules du groupe",
+        label: "Puissance des voitures",
         backgroundColor: [
           'rgba(255, 99, 132, 0.2)',
           'rgba(54, 162, 235, 0.2)',
@@ -256,14 +256,23 @@
           'rgba(255, 206, 86, 1)'
         ],
         borderWidth: 1,
-        data: [<?php echo $stats1->pmin ?>, <?php echo $stats1->pmax ?>, <?php echo $stats1->pavg ?>],
+        data: [<?php echo $stats1->pmin ?>, <?php echo $stats1->pmax ?>, <?php echo $stats1->pavg ?>]
       }]
     };
     
     var ctx3 = document.getElementById("myChart3"); 
     var myBarChart = new Chart(ctx3, {
       type: 'bar',
-      data: data3
+      data: data3,
+      options: {
+        scales: {
+          yAxes: [{
+            ticks: {
+              beginAtZero:true
+            }
+          }]
+        }
+      }
     });
     </script>     
 

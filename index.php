@@ -12,9 +12,11 @@
     <meta name="robots" content="index, follow" />
     <!--<link rel="icon" type="image/png" href="graphics/favicon.png" />-->
     <link rel="stylesheet" type="text/css" href="scripts/css/style.css" />
-    <link rel="stylesheet" type="text/css" href="scripts/css/popup.css" />
-    <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
-    <script src="scripts/js/css-pop.js"></script>
+    <!-- Add jQuery library -->
+    <script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
+    <!-- Add fancyBox -->
+    <link rel="stylesheet" href="scripts/js/fancyBox/jquery.fancybox.css?v=2.1.5" type="text/css" media="screen" />
+    <script type="text/javascript" src="scripts/js/fancyBox/jquery.fancybox.pack.js?v=2.1.5"></script>
   </head>
 
   <body id="home">
@@ -72,7 +74,7 @@
         </legend>
       
         <table class="listing border">
-          <tr><th>Marque</th><th>Modèle</th><th>Année</th><th>Code</th><th>Motorisation</th><th>Energie</th><th>Puiss.<br />(ch)</th><th>Couple<br />(N.m)</th><th>Boîte</th><th colspan="2">Propriétaire</th></tr>
+          <tr><th>Marque</th><th>Modèle</th><th>Année</th><th>Code</th><th>Motorisation</th><th>Energie</th><th>Puiss.<br />(ch)</th><th>Couple<br />(N.m)</th><th>Boîte</th><th colspan="3">Propriétaire</th></tr>
           <?php
           $id_groupe = empty($_POST['group']) ? $first_group : $_POST['group'];
           
@@ -91,19 +93,22 @@
           $query = $db->writeQuery($query, (int) $id_groupe);
           
           if ($result = $db->query($query)) {
-            $ident = 0;
-            while ($voiture = $result->fetch_object('Voiture')) {           
+            while ($voiture = $result->fetch_object('Voiture')) {
+              $ava_src = 'uploads/'.str_pad($voiture->id_utilisateur, 10, '0', STR_PAD_LEFT).'/avatar.jpg';
+              $car_src = 'uploads/'.str_pad($voiture->id_utilisateur, 10, '0', STR_PAD_LEFT).'/car.jpg';
               $admin = empty($_SESSION['admin']) ? 0 : $_SESSION['admin'];
               
-              echo '<tr><td>', $voiture->lib_marque, '</td><td>', $voiture->lib_modele, '</td><td>', $voiture->annee, '</td><td>', $voiture->lib_code,
-                '</td><td>', $voiture->lib_motorisation, '</td><td>', $voiture->energie, '</td><td>', $voiture->puissance, '</td><td>', $voiture->couple,
-                '</td><td>', $voiture->lib_boite, '</td><td><span style=\"\" title="', $voiture->lib_voiture, '">', $voiture->login, '<p class="identite">',
-                $voiture->prenom, '</p></span></td><td><img style="cursor:pointer;" id="img', $ident, '" class="avatar" src="uploads/',
-                str_pad($voiture->id_utilisateur, 10, '0', STR_PAD_LEFT), '/thumbnail.jpg" onerror="this.src=\'graphics/default.png\'"',
-                ' onclick="popup(\'popUpDiv\', \'uploads/', str_pad($voiture->id_utilisateur, 10, '0', STR_PAD_LEFT) , '/avatar.jpg\')"" /></td>',
+              echo '<tr>',
+                '<td>', $voiture->lib_marque, '</td><td>', $voiture->lib_modele, '</td><td>', $voiture->annee, '</td>',
+                '<td>', $voiture->lib_code, '</td><td>', $voiture->lib_motorisation, '</td><td>', $voiture->energie, '</td>',
+                '<td>', $voiture->puissance, '</td><td>', $voiture->couple, '</td><td>', $voiture->lib_boite, '</td>',
+                '<td>', $voiture->login, '<br /><i>', $voiture->prenom, '</i></td>',
+                '<td><a class="fancybox" href="', $ava_src, '">',
+                '<img class="avatar" src="', $ava_src, '" onerror="this.src=\'graphics/default.png\'" /></a></td>',
+                '<td><a class="fancybox" href="', $car_src, '">',
+                '<img class="avatar" src="', $car_src, '" onerror="this.src=\'graphics/default.png\'" /></a></td>',
                 $admin == '1' ? '<td><a href="profile_car_edit.php?car_id='.$voiture->id_voiture.'"><img  src="graphics/pencil.png" /></a></td>' : '',
                 '</tr>', "\n";        
-              $ident++;
             }
           }
           ?>
@@ -115,7 +120,11 @@
       ?>
     </section>
     
-    <script></script>
+    <script type="text/javascript">
+      $(document).ready(function() {
+        $(".fancybox").fancybox();
+      });
+    </script>
     
     <footer>
       <?php include 'footer.inc.php'; ?>

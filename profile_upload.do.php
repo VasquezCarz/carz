@@ -7,8 +7,7 @@ if (empty($_SESSION['id_utilisateur'])) {
 }
 
 $target_dir = "uploads/".str_pad($_SESSION['id_utilisateur'], 10, '0', STR_PAD_LEFT);
-if (!file_exists($target_dir))
-  mkdir($target_dir);
+if (!file_exists($target_dir)) mkdir($target_dir);
 $target_file = $target_dir."/".basename($_FILES["fileToUpload"]["name"]);
 $uploadOk = 1;
 $imageFileType = pathinfo($target_file, PATHINFO_EXTENSION);
@@ -39,8 +38,8 @@ if ($_FILES["fileToUpload"]["size"] > 1048576) {
 }
 
 // Allow certain file formats
-if ($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg" && $imageFileType != "gif" ) {
-  $_SESSION['msg'] = '<span class="error">Désolé, seulement les fichiers JPG, JPEG, PNG & GIF sont autorisés !</span>';
+if ($imageFileType != "jpg" && $imageFileType != "jpeg") {
+  $_SESSION['msg'] = '<span class="error">Désolé, seuls les fichiers JPG et JPEG sont autorisés !</span>';
   $uploadOk = 0;
 }
 
@@ -56,8 +55,9 @@ else {
     include(PATH_SCRIPTS.'/php/Image.class.php');
     $img = new Image();
     $img->open($target_file);
-    $img->saveAsCustom(pathinfo($target_file, PATHINFO_DIRNAME).'/avatar.jpg', 0, 100);
-    $img->saveAsThumbnail(pathinfo($target_file, PATHINFO_DIRNAME).'/thumbnail.jpg');
+    $height = min(720, $img->getHeight());
+    $name = empty($_POST['picture']) ? 'avatar' : $_POST['picture'];
+    $img->saveAsCustom(pathinfo($target_file, PATHINFO_DIRNAME).'/'.$name.'.jpg', 0, $height);
     unlink($target_file);
   }
   else {

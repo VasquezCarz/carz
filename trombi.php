@@ -12,7 +12,11 @@
     <meta name="robots" content="index, follow" />
     <!--<link rel="icon" type="image/png" href="graphics/favicon.png" />-->
     <link rel="stylesheet" type="text/css" href="scripts/css/style.css" />
-  <script src="scripts/js/Chart.min.js"></script>
+    <!-- Add jQuery library -->
+    <script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
+    <!-- Add fancyBox -->
+    <link rel="stylesheet" href="scripts/js/fancyBox/jquery.fancybox.css?v=2.1.5" type="text/css" media="screen" />
+    <script type="text/javascript" src="scripts/js/fancyBox/jquery.fancybox.pack.js?v=2.1.5"></script>
   </head>
 
   <body id="trombi">
@@ -27,7 +31,6 @@
     
     <nav>      
       <?php include 'nav.inc.php'; ?>
-      <h2>En construction...</h2>
     </nav>
     
     <section>
@@ -35,15 +38,18 @@
         <?php
         $db = new Database();
         $db->connect();
-        $query = 'SELECT login, prenom FROM crz_utilisateur ORDER BY login';
+        $query = 'SELECT id_utilisateur, login, prenom FROM crz_utilisateur';
+        $query .= ' WHERE id_utilisateur IN (SELECT fk_utilisateur FROM crz_groupe_utilisateur)';
+        $query .= ' ORDER BY login';
         if ($result = $db->query($query)) {
           $i = 0;
           while ($user = $result->fetch_object('User')) {
+            $src = 'uploads/'.str_pad($user->id_utilisateur, 10, '0', STR_PAD_LEFT).'/portrait.jpg';
             if ($i % 5 == 0) echo "<tr>";
-            //echo "<td style=\"width:100px;border:1px gray dotted; padding:10px;\"><img style=\"width:50px;margin-left:25px;\" src=\"graphics/people.png\"/><p style=\"text-align:center;\">" . $user->login . "</p></td>";
-            echo '<td style="width: 100px; border: 1px gray dotted; padding:10px;">',
-              '<img style="width: 50px; margin-left: 25px;" src="graphics/user.png" />',
-              '<p style="text-align: center;">', $user->login, '<br /><i>', $user->prenom, '</i></p></td>';
+            echo '<td style="width: 130px; border: 1px gray dotted; padding: 10px;">',
+              '<a class="fancybox" href="', $src, '">',
+              '<img style="width: 130px;" src="', $src, '" onerror="this.src=\'graphics/portrait_default.jpg\'" /></a>',
+              '<div style="text-align: center;">', $user->login, '<br /><i>', $user->prenom, '</i></div></td>';
             if ($i % 5 == 4) echo "</tr>\n";
             $i++;
           }
@@ -51,6 +57,12 @@
         ?>
       </table>
     </section>
+    
+    <script type="text/javascript">
+      $(document).ready(function() {
+        $(".fancybox").fancybox();
+      });
+    </script>
     
     <footer>
       <?php include 'footer.inc.php'; ?>

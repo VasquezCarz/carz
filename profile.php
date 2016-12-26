@@ -41,9 +41,20 @@ if (empty($_SESSION['id_utilisateur'])) {
       ?>
       
           <fieldset>
-            <legend>Avatar</legend>
+            <legend>Photos</legend>
             <form action="profile_upload.do.php" method="post" enctype="multipart/form-data">        
-              <img src="uploads/<?php echo str_pad($_SESSION['id_utilisateur'], 10, '0', STR_PAD_LEFT); ?>/avatar.jpg" />
+              <table>
+                <tr>
+                  <td><img src="uploads/<?php echo str_pad($_SESSION['id_utilisateur'], 10, '0', STR_PAD_LEFT); ?>/avatar.jpg" height="100" /></td>
+                  <td><img src="uploads/<?php echo str_pad($_SESSION['id_utilisateur'], 10, '0', STR_PAD_LEFT); ?>/portrait.jpg" height="100" /></td>
+                  <td><img src="uploads/<?php echo str_pad($_SESSION['id_utilisateur'], 10, '0', STR_PAD_LEFT); ?>/car.jpg" height="100" /></td>
+                </tr>
+                <tr>
+                  <td><input type="radio" id="ava" name="picture" value="avatar" checked="checked" /><label for="ava">Avatar</label></td>
+                  <td><input type="radio" id="por" name="picture" value="portrait" /><label for="por">Portrait</label></td>
+                  <td><input type="radio" id="car" name="picture" value="car" /><label for="car">Voiture</label></td>
+                </tr>
+              </table>
               <input type="file" name="fileToUpload" id="fileToUpload" />
               <input type="submit" value="Télécharger l'image" name="submit" />
               <span class="info">Taille max : 1 Mo</span>
