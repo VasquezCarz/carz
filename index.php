@@ -25,7 +25,7 @@
     include PATH_SCRIPTS.'/php/Database.class.php';
     require_once(PATH_SCRIPTS.'/php/Groupe.class.php');
     require_once(PATH_SCRIPTS.'/php/Voiture.class.php');
-    require_once(PATH_SCRIPTS.'/php/MyLogPHP.class.php');
+    //require_once(PATH_SCRIPTS.'/php/MyLogPHP.class.php');
     ?>
     
     <header>
@@ -40,7 +40,7 @@
       <?php
       $db = new Database();
       $db->connect();
-      $log = new MyLogPHP('./log/debug.log.csv', ';');
+      //$log = new MyLogPHP('./log/debug.log.csv', ';');
       ?>
       <div id="blanket" style="display: none"></div>
       <div id="popUpDiv" style="display: none">
@@ -105,7 +105,7 @@
                 '<td>', $voiture->login, '<br /><i>', $voiture->prenom, '</i></td>',
                 '<td><a class="fancybox" href="', $ava_src, '">',
                 '<img class="avatar" src="', $ava_src, '" onerror="this.src=\'graphics/default.png\'" /></a></td>',
-                '<td><a class="fancybox" href="', $car_src, '">',
+                '<td><a class="fancybox" href="', $car_src, '" title="', $voiture->lib_voiture, '">',
                 '<img class="avatar" src="', $car_src, '" onerror="this.src=\'graphics/default.png\'" /></a></td>',
                 $admin == '1' ? '<td><a href="profile_car_edit.php?car_id='.$voiture->id_voiture.'"><img  src="graphics/pencil.png" /></a></td>' : '',
                 '</tr>', "\n";        
@@ -122,7 +122,11 @@
     
     <script type="text/javascript">
       $(document).ready(function() {
-        $(".fancybox").fancybox();
+        $(".fancybox").fancybox({
+          helpers: {
+            title: { type: 'inside' }
+          }
+        });
       });
     </script>
     

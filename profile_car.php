@@ -87,7 +87,7 @@ if (empty($_SESSION['id_utilisateur'])) {
             $selectedModel = empty($_SESSION['selectedModel']) ? '' : $_SESSION['selectedModel'];
             $first = 0;
             $found = false;
-            $query = $db->writeQuery('SELECT id_modele, lib_modele FROM crz_modele WHERE fk_marque = %d ORDER BY lib_modele', (int) $selectedBrand);
+            $query = $db->writeQuery('SELECT id_modele, lib_modele FROM crz_modele WHERE fk_marque = %d ORDER BY lib_modele', (int) $_SESSION['selectedBrand']);
             $result2 = $db->query($query);
             $i = 0;
             while ($voiture2 = $result2->fetch_object('Voiture')) {
@@ -120,6 +120,7 @@ if (empty($_SESSION['id_utilisateur'])) {
           <legend>Code</legend>
           <select name="selectedCode" onchange="document.frmCar.submit();" class="thick">
             <?php
+            $selectedCode = empty($_SESSION['selectedCode']) ? '' : $_SESSION['selectedCode'];
             $first = 0;
             $found = false;
             $query = 'SELECT c.id_code, c.lib_code FROM crz_code c';
@@ -134,7 +135,7 @@ if (empty($_SESSION['id_utilisateur'])) {
               if ($i == 0) $first = $id_code;
               if ($_SESSION['selectedCode'] == $id_code) $found = true;
               $lib_code = $voiture3->lib_code;
-              echo '<option value="', $id_code, '"', $_SESSION['selectedCode'] == $id_code ? ' selected="selected"' : '', '>', $lib_code, '</option>', "\n";
+              echo '<option value="', $id_code, '"', $selectedCode == $id_code ? ' selected="selected"' : '', '>', $lib_code, '</option>', "\n";
               $i++;
             }
             if (!$found) $_SESSION['selectedCode'] = $first;

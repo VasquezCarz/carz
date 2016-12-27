@@ -17,7 +17,7 @@ $db->close();
 //------- Mail -----------------------------------------------------------------
 $to = $_SESSION['mail'];
 $subject = 'Activation de votre compte sur l\'application Web "Carz"';
-$body = sprintf(file_get_contents('mails/activation.htm'), $_SESSION['login'], BASE_URL.'/user_activate.php?user_id='.$_SESSION['id_utilisateur'].'&hash='.$_SESSION['hash_activation']);
+$body = sprintf(file_get_contents('mails/activation.htm'), $_SESSION['login'], BASE_URL.'/user_activate.do.php?user_id='.$_SESSION['id_utilisateur'].'&hash='.$_SESSION['hash_activation']);
 
 $headers  = 'MIME-Version: 1.0'."\r\n";
 $headers .= 'Content-type: text/html; charset=UTF-8'."\r\n";

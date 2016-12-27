@@ -13,6 +13,11 @@ if (empty($_SESSION['id_utilisateur'])) {
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <meta charset="UTF-8" />
     <link rel="stylesheet" type="text/css" href="scripts/css/style.css" />
+    <!-- Add jQuery library -->
+    <script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
+    <!-- Add fancyBox -->
+    <link rel="stylesheet" href="scripts/js/fancyBox/jquery.fancybox.css?v=2.1.5" type="text/css" media="screen" />
+    <script type="text/javascript" src="scripts/js/fancyBox/jquery.fancybox.pack.js?v=2.1.5"></script>
   </head>
   
   <body>
@@ -38,6 +43,7 @@ if (empty($_SESSION['id_utilisateur'])) {
       $query = $db->writeQuery('SELECT login, nom, prenom, mail, hash_activation FROM crz_utilisateur WHERE id_utilisateur = %d', (int) $_SESSION['id_utilisateur']);
       if ($result = $db->query($query)) {
         if ($user = $result->fetch_object('User')) {
+          $dir = 'uploads/'.str_pad($_SESSION['id_utilisateur'], 10, '0', STR_PAD_LEFT);
       ?>
       
           <fieldset>
@@ -45,9 +51,9 @@ if (empty($_SESSION['id_utilisateur'])) {
             <form action="profile_upload.do.php" method="post" enctype="multipart/form-data">        
               <table>
                 <tr>
-                  <td><img src="uploads/<?php echo str_pad($_SESSION['id_utilisateur'], 10, '0', STR_PAD_LEFT); ?>/avatar.jpg" height="100" /></td>
-                  <td><img src="uploads/<?php echo str_pad($_SESSION['id_utilisateur'], 10, '0', STR_PAD_LEFT); ?>/portrait.jpg" height="100" /></td>
-                  <td><img src="uploads/<?php echo str_pad($_SESSION['id_utilisateur'], 10, '0', STR_PAD_LEFT); ?>/car.jpg" height="100" /></td>
+                  <td><a class="fancybox" href="<?php echo $dir; ?>/avatar.jpg"><img src="<?php echo $dir; ?>/avatar.jpg" height="100" /></a></td>
+                  <td><a class="fancybox" href="<?php echo $dir; ?>/portrait.jpg"><img src="<?php echo $dir; ?>/portrait.jpg" height="100" /></a></td>
+                  <td><a class="fancybox" href="<?php echo $dir; ?>/car.jpg"><img src="<?php echo $dir; ?>/car.jpg" height="100" /></a></td>
                 </tr>
                 <tr>
                   <td><input type="radio" id="ava" name="picture" value="avatar" checked="checked" /><label for="ava">Avatar</label></td>
@@ -57,7 +63,7 @@ if (empty($_SESSION['id_utilisateur'])) {
               </table>
               <input type="file" name="fileToUpload" id="fileToUpload" />
               <input type="submit" value="Télécharger l'image" name="submit" />
-              <span class="info">Taille max : 1 Mo</span>
+              <span class="info">Taille max : 2 Mo</span>
             </form>
           </fieldset>
           <br />
@@ -134,7 +140,7 @@ if (empty($_SESSION['id_utilisateur'])) {
                 $voiture->lib_code, '</td><td>', $voiture->lib_motorisation, '</td><td>', $voiture->puissance, '</td><td>',
                 $voiture->couple, '</td><td>', $voiture->lib_boite, '</td><td>', $voiture->lib_voiture, '</td>',
                 '<td><a href="profile_car_edit.php?car_id=', $voiture->id_voiture, '"><img src="graphics/pencil.png" alt="Modifier" title="Modifier" /></a></td>',
-                '<td><a href="profile_car_delete.php?car_id=', $voiture->id_voiture, '">',
+                '<td><a href="profile_car_delete.do.php?car_id=', $voiture->id_voiture, '">',
                 '<img src="graphics/delete.png" alt="Supprimer" title="Supprimer" onclick="return confirm(\'Êtes-vous sûr de supprimer cette voiture ?\');" />',
                 '</a></td></tr>', "\n";
             }
@@ -147,6 +153,16 @@ if (empty($_SESSION['id_utilisateur'])) {
       $db->close();
       ?>
     </section>
+    
+    <script type="text/javascript">
+      $(document).ready(function() {
+        $(".fancybox").fancybox({
+          helpers: {
+            title: { type: 'inside' }
+          }
+        });
+      });
+    </script>
     
     <footer>
       <?php include 'footer.inc.php'; ?>

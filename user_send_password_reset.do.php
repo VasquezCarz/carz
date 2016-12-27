@@ -25,7 +25,7 @@ if (trim($_POST['txtMail']) != '') {
     //------- Mail -------------------------------------------------------------
     $to = $data['mail'];
     $subject = 'Réinitialisation de vos identifiants de connexion sur l\'application Web "Carz"';
-    $body = sprintf(file_get_contents('mails/password_reset.htm'), $_SESSION['login'], BASE_URL.'/user_password_reset.php?user_id='.$data['id_utilisateur'].'&hash='.$hash);
+    $body = sprintf(file_get_contents('mails/password_reset.htm'), $_SESSION['login'], BASE_URL.'/user_password_reset.do.php?user_id='.$data['id_utilisateur'].'&hash='.$hash);
     
     $headers  = 'MIME-Version: 1.0'."\r\n";
     $headers .= 'Content-type: text/html; charset=UTF-8'."\r\n";
