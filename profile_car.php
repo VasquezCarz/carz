@@ -249,7 +249,7 @@ if (empty($_SESSION['id_utilisateur'])) {
             <?php
             $first = 0;
             $found = false;
-            $query = 'SELECT m.id_motorisation, m.lib_motorisation FROM crz_motorisation m';
+            $query = 'SELECT m.id_motorisation, m.lib_motorisation, m.cylindree FROM crz_motorisation m';
             $query .= ' INNER JOIN crz_puissance p ON m.id_motorisation = p.fk_motorisation';
             $query .= ' WHERE p.id_puissance = %d';
             $query .= ' ORDER BY m.lib_motorisation';
@@ -261,7 +261,9 @@ if (empty($_SESSION['id_utilisateur'])) {
               if ($i == 0) $first = $id_motorisation;
               if ($_SESSION['selectedEngine'] == $id_motorisation) $found = true;
               $lib_motorisation = $voiture7->lib_motorisation;
-              echo '<option value="', $id_motorisation, '"', $_SESSION['selectedEngine'] == $id_motorisation ? ' selected="selected"' : '', '>', $lib_motorisation, '</option>', "\n";
+              $cylindree = $voiture7->cylindree;
+              echo '<option value="', $id_motorisation, '"', $_SESSION['selectedEngine'] == $id_motorisation ? ' selected="selected"' : '', '>',
+                $lib_motorisation, ' (', $cylindree, ' cm3)</option>', "\n";
               $i++;
             }
             if (!$found) $_SESSION['selectedEngine'] = $first;
@@ -276,7 +278,7 @@ if (empty($_SESSION['id_utilisateur'])) {
           <i>Autre :</i><br />
           <select name="selectedOtherEngine">
             <?php
-            $query = 'SELECT id_motorisation, lib_motorisation FROM crz_motorisation';
+            $query = 'SELECT id_motorisation, lib_motorisation, cylindree FROM crz_motorisation';
             $query .= ' WHERE id_motorisation NOT IN (SELECT fk_motorisation FROM crz_puissance WHERE id_puissance = %d)';
             $query .= ' ORDER BY lib_motorisation';
             $query = $db->writeQuery($query, (int) $_SESSION['selectedPower']);
@@ -284,7 +286,8 @@ if (empty($_SESSION['id_utilisateur'])) {
             while ($voiture8 = $result8->fetch_object('Voiture')) {
               $id_motorisation = $voiture8->id_motorisation;
               $lib_motorisation = $voiture8->lib_motorisation;
-              echo '<option value="', $id_motorisation, '">', $lib_motorisation, '</option>', "\n";
+              $cylindree = $voiture8->cylindree;
+              echo '<option value="', $id_motorisation, '">', $lib_motorisation, ' (', $cylindree, ' cm3)</option>', "\n";
             }
             ?>
           </select>

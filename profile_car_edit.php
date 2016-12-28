@@ -181,7 +181,7 @@ if (empty($_SESSION['id_utilisateur'])) {
                   <?php
                   $first = 0;
                   $found = false;
-                  $query = 'SELECT m.id_motorisation, m.lib_motorisation FROM crz_motorisation m';
+                  $query = 'SELECT m.id_motorisation, m.lib_motorisation, m.cylindree FROM crz_motorisation m';
                   $query .= ' INNER JOIN crz_puissance p ON m.id_motorisation = p.fk_motorisation';
                   $query .= ' WHERE p.id_puissance = %d';
                   $query .= ' ORDER BY m.lib_motorisation';
@@ -194,8 +194,9 @@ if (empty($_SESSION['id_utilisateur'])) {
                       if ($i == 0) $first = $id_motorisation;
                       if ($_SESSION['selectedEngine'] == $id_motorisation) $found = true;
                       $lib_motorisation = $voiture5->lib_motorisation;
+                      $cylindree = $voiture5->cylindree;
                       echo '<option value="', $id_motorisation, '"', $_SESSION['selectedEngine'] == $id_motorisation ? ' selected="selected"' : '', '>',
-                        $lib_motorisation, '</option>', "\n";
+                        $lib_motorisation, ' (', $cylindree, ' cm3)</option>', "\n";
                       $i++;
                     }
                   }
