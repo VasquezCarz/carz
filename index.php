@@ -74,7 +74,19 @@
         </legend>
       
         <table class="listing border">
-          <tr><th>Marque</th><th>Modèle</th><th>Année</th><th>Code</th><th>Motorisation</th><th>Energie</th><th>Puiss.<br />(ch)</th><th>Couple<br />(N.m)</th><th>Boîte</th><th colspan="3">Propriétaire</th></tr>
+          <tr>
+            <th style="border-left: none; border-top: none;"></th>
+            <th>Marque</th>
+            <th>Modèle</th>
+            <th>Année</th>
+            <th>Code</th>
+            <th>Motorisation</th>
+            <th>Energie</th>
+            <th>Puiss.<br />(ch)</th>
+            <th>Couple<br />(N.m)</th>
+            <th>Boîte</th>
+            <th colspan="2">Propriétaire</th>
+          </tr>
           <?php
           $id_groupe = empty($_POST['group']) ? $first_group : $_POST['group'];
           
@@ -95,20 +107,20 @@
           if ($result = $db->query($query)) {
             while ($voiture = $result->fetch_object('Voiture')) {
               $ava_src = 'uploads/'.str_pad($voiture->id_utilisateur, 10, '0', STR_PAD_LEFT).'/avatar.jpg';
-              $car_src = 'uploads/'.str_pad($voiture->id_utilisateur, 10, '0', STR_PAD_LEFT).'/car.jpg';
+              $car_src = 'uploads/'.str_pad($voiture->id_utilisateur, 10, '0', STR_PAD_LEFT).'/car'.str_pad($voiture->id_voiture, 10, '0', STR_PAD_LEFT).'.jpg';
               $admin = empty($_SESSION['admin']) ? 0 : $_SESSION['admin'];
               
               echo '<tr>',
+                '<td><a class="fancybox" href="', $car_src, '" title="', $voiture->lib_voiture, '">',
+                '<img class="avatar" src="', $car_src, '" onerror="this.src=\'graphics/default.png\'" /></a></td>',
                 '<td>', $voiture->lib_marque, '</td><td>', $voiture->lib_modele, '</td><td>', $voiture->annee, '</td>',
                 '<td>', $voiture->lib_code, '</td><td>', $voiture->lib_motorisation, '</td><td>', $voiture->energie, '</td>',
                 '<td>', $voiture->puissance, '</td><td>', $voiture->couple, '</td><td>', $voiture->lib_boite, '</td>',
-                '<td>', $voiture->login, '<br /><i>', $voiture->prenom, '</i></td>',
-                '<td><a class="fancybox" href="', $ava_src, '">',
+                '<td style="border-right: none; text-align: right;"><a class="fancybox" href="', $ava_src, '">',
                 '<img class="avatar" src="', $ava_src, '" onerror="this.src=\'graphics/default.png\'" /></a></td>',
-                '<td><a class="fancybox" href="', $car_src, '" title="', $voiture->lib_voiture, '">',
-                '<img class="avatar" src="', $car_src, '" onerror="this.src=\'graphics/default.png\'" /></a></td>',
+                '<td style="border-left: none;">', $voiture->login, '<br /><i>', $voiture->prenom, '</i></td>',
                 $admin == '1' ? '<td><a href="profile_car_edit.php?car_id='.$voiture->id_voiture.'"><img  src="graphics/pencil.png" /></a></td>' : '',
-                '</tr>', "\n";        
+                '</tr>', "\n";
             }
           }
           ?>

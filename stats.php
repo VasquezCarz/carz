@@ -55,10 +55,10 @@
         <div style="width: 400px; height: 300px; float: left;">    
           <table class="border stats">
             <tr>
-              <td></td>
+              <td style="border-left: none; border-top: none;"></td>
               <th class="stats_taux">Min.</th>
-              <th class="stats_taux">Moy.</th>
               <th class="stats_taux">Max.</th>
+              <th class="stats_taux">Moy.</th>
               <th class="stats_taux">Total</th>
             </tr>
             <tr>
@@ -71,36 +71,36 @@
             <tr>
               <th>Puissance (ch)</th>
               <td><?php echo $stats1->pmin; ?></td>
-              <td><?php echo $stats1->pavg; ?></td>
               <td><?php echo $stats1->pmax; ?></td>
+              <td><?php echo $stats1->pavg; ?></td>
               <td><?php echo $stats1->psum; ?></td>
             </tr>
             <tr>
               <th>Couple (N.m)</th>
               <td><?php echo $stats1->tmin; ?></td>
-              <td><?php echo $stats1->tavg; ?></td>
               <td><?php echo $stats1->tmax; ?></td>
+              <td><?php echo $stats1->tavg; ?></td>
               <td><?php echo $stats1->tsum; ?></td>
             </tr>
             <tr>
               <th>Cylindrée (cm<sup>3</sup>)</th>
               <td><?php echo $stats1->dmin; ?></td>
-              <td><?php echo $stats1->davg; ?></td>
               <td><?php echo $stats1->dmax; ?></td>
+              <td><?php echo $stats1->davg; ?></td>
               <td><?php echo $stats1->dsum; ?></td>
             </tr>
             <tr>
               <th>Nb cylindres</th>
               <td><?php echo $stats1->cmin; ?></td>
-              <td><?php echo $stats1->cavg; ?></td>
               <td><?php echo $stats1->cmax; ?></td>
+              <td><?php echo $stats1->cavg; ?></td>
               <td><?php echo $stats1->csum; ?></td>
             </tr>
             <tr>
               <th>Nb soupapes</th>
               <td><?php echo $stats1->vmin; ?></td>
-              <td><?php echo $stats1->vavg; ?></td>
               <td><?php echo $stats1->vmax; ?></td>
+              <td><?php echo $stats1->vavg; ?></td>
               <td><?php echo $stats1->vsum; ?></td>
             </tr>
           </table>

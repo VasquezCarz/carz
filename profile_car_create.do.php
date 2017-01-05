@@ -9,6 +9,9 @@ if (empty($_SESSION['id_utilisateur'])) {
 include 'config/carz.conf.php';
 include PATH_SCRIPTS.'/php/Database.class.php';
 
+//require_once(PATH_SCRIPTS.'/php/MyLogPHP.class.php');
+//$log = new MyLogPHP('./log/debug.log.csv', ';');
+
 $db = new Database();
 $db->connect();
 
@@ -88,10 +91,11 @@ if (!empty($_POST['removeCode']) && $_POST['removeCode'] == '-' && !empty($_POST
 
 // Ajouter une nouvelle puissance
 if (!empty($_POST['addNewPower']) && $_POST['addNewPower'] == '+' && is_numeric($_POST['txtPower']) && is_numeric($_POST['txtPowerRpm']) && is_numeric($_POST['txtTorque']) && is_numeric($_POST['txtTorqueRpm'])) {
-  $query = 'INSERT INTO crz_puissance (puissance, regime_puissance, couple, regime_couple) VALUES (%d, %d, %d, %d)';
+  $query = 'INSERT INTO crz_puissance (puissance, regime_puissance, couple, regime_couple, fk_motorisation) VALUES (%d, %d, %d, %d, 0)';
   $query = $db->writeQuery($query, (int) $_POST['txtPower'], (int) $_POST['txtPowerRpm'], (int) $_POST['txtTorque'], (int) $_POST['txtTorqueRpm']);
   $db->query($query);
   $id_puissance = $db->getInsertId();
+  //$log->debug('getInsertId = '.$id_puissance);
   $_SESSION['selectedPower'] = $id_puissance;
   
   $query = 'INSERT INTO crz_modele_code_puissance (fk_modele, fk_code, fk_puissance) VALUES (%d, %d, %d)';

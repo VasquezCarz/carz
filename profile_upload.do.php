@@ -31,7 +31,7 @@ if (file_exists($target_file)) {
   $uploadOk = 0;
 }
 
-// Check file size (<= 1 MB)
+// Check file size (<= 2 MB)
 if ($_FILES["fileToUpload"]["size"] > 2097152) {
   $_SESSION['msg'] = '<span class="error">Désolé, votre fichier est trop grand ! (Taille max : 2 Mo)</span>';
   $uploadOk = 0;

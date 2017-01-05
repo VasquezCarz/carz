@@ -49,21 +49,43 @@ if (empty($_SESSION['id_utilisateur'])) {
           <fieldset>
             <legend>Photos</legend>
             <form action="profile_upload.do.php" method="post" enctype="multipart/form-data">        
-              <table>
-                <tr>
-                  <td><a class="fancybox" href="<?php echo $dir; ?>/avatar.jpg"><img src="<?php echo $dir; ?>/avatar.jpg" height="100" /></a></td>
-                  <td><a class="fancybox" href="<?php echo $dir; ?>/portrait.jpg"><img src="<?php echo $dir; ?>/portrait.jpg" height="100" /></a></td>
-                  <td><a class="fancybox" href="<?php echo $dir; ?>/car.jpg"><img src="<?php echo $dir; ?>/car.jpg" height="100" /></a></td>
-                </tr>
-                <tr>
-                  <td><input type="radio" id="ava" name="picture" value="avatar" checked="checked" /><label for="ava">Avatar</label></td>
-                  <td><input type="radio" id="por" name="picture" value="portrait" /><label for="por">Portrait</label></td>
-                  <td><input type="radio" id="car" name="picture" value="car" /><label for="car">Voiture</label></td>
-                </tr>
-              </table>
+              <div class="floating-box">
+                <a class="fancybox" href="<?php echo $dir; ?>/avatar.jpg"><img src="<?php echo $dir; ?>/avatar.jpg" height="100" /></a><br />
+                <input type="radio" id="ava" name="picture" value="avatar" checked="checked" /><label for="ava">Avatar</label>
+              </div>
+              
+              <div class="floating-box">
+                <a class="fancybox" href="<?php echo $dir; ?>/portrait.jpg"><img src="<?php echo $dir; ?>/portrait.jpg" height="100" /></a><br />
+                <input type="radio" id="por" name="picture" value="portrait" /><label for="por">Portrait</label>
+              </div>
+              
+              <?php
+              $query = 'SELECT v.id_voiture, v.lib_voiture FROM crz_voiture v';
+              $query .= ' INNER JOIN crz_modele m ON v.fk_modele = m.id_modele';
+              $query .= ' INNER JOIN crz_marque ma ON m.fk_marque = ma.id_marque';
+              $query .= ' INNER JOIN crz_code c ON v.fk_code = c.id_code';
+              $query .= ' WHERE v.fk_utilisateur = %d';
+              $query .= ' ORDER BY ma.lib_marque, c.id_code, m.id_modele';
+              $query = $db->writeQuery($query, (int) $_SESSION['id_utilisateur']);
+              if ($result = $db->query($query)) {
+                while ($voiture = $result->fetch_object('Voiture')) {
+                  $value = 'car'.str_pad($voiture->id_voiture, 10, '0', STR_PAD_LEFT);
+                  $car_src = $dir.'/'.$value.'.jpg';
+              ?>
+                  <div class="floating-box">
+                    <a class="fancybox" href="<?php echo $car_src; ?>"><img src="<?php echo $car_src; ?>" height="100" /></a><br />
+                    <input type="radio" id="<?php echo $value; ?>" name="picture" value="<?php echo $value; ?>" />
+                    <label for="<?php echo $value; ?>"><?php echo $voiture->lib_voiture; ?></label>
+                  </div>
+              <?php
+                }
+              }
+              ?>
+              
+              <br /><br />
               <input type="file" name="fileToUpload" id="fileToUpload" />
               <input type="submit" value="Télécharger l'image" name="submit" />
-              <span class="info">Taille max : 2 Mo</span>
+              <span class="info">Seuls les fichiers JPG sont autorisés (taille max : 2 Mo)</span>
             </form>
           </fieldset>
           <br />
@@ -136,9 +158,9 @@ if (empty($_SESSION['id_utilisateur'])) {
           
           if ($result = $db->query($query)) {
             while ($voiture = $result->fetch_object('Voiture')) {
-              echo '<tr><td>', $voiture->lib_marque, '</td><td>', $voiture->lib_modele, '</td><td>', $voiture->annee, '</td><td>',
-                $voiture->lib_code, '</td><td>', $voiture->lib_motorisation, '</td><td>', $voiture->puissance, '</td><td>',
-                $voiture->couple, '</td><td>', $voiture->lib_boite, '</td><td>', $voiture->lib_voiture, '</td>',
+              echo '<tr><td>', $voiture->lib_marque, '</td><td>', $voiture->lib_modele, '</td><td>', $voiture->annee, '</td>',
+                '<td>', $voiture->lib_code, '</td><td>', $voiture->lib_motorisation, '</td><td>', $voiture->puissance, '</td>',
+                '<td>', $voiture->couple, '</td><td>', $voiture->lib_boite, '</td><td>', $voiture->lib_voiture, '</td>',
                 '<td><a href="profile_car_edit.php?car_id=', $voiture->id_voiture, '"><img src="graphics/pencil.png" alt="Modifier" title="Modifier" /></a></td>',
                 '<td><a href="profile_car_delete.do.php?car_id=', $voiture->id_voiture, '">',
                 '<img src="graphics/delete.png" alt="Supprimer" title="Supprimer" onclick="return confirm(\'Êtes-vous sûr de supprimer cette voiture ?\');" />',
