@@ -9,7 +9,7 @@
     <meta name="author" content="Vasquez" />
     <meta name="language" content="fr" />
     <meta name="keywords" content="vasquez, audi, friends, club" />
-    <meta name="robots" content="index, follow" />
+    <meta name="robots" content="noindex, nofollow" />
     <!--<link rel="icon" type="image/png" href="graphics/favicon.png" />-->
     <link rel="stylesheet" type="text/css" href="scripts/css/style.css" />
     <!-- Add jQuery library -->
@@ -38,16 +38,22 @@
     
     <section>
       <?php
-      $db = new Database();
-      $db->connect();
-      //$log = new MyLogPHP('./log/debug.log.csv', ';');
+      if (empty($_SESSION['id_utilisateur'])) {
+        echo 'Veuillez vous authentifier pour accéder au contenu...';
+      }
+      else {
+        //$log = new MyLogPHP('./log/debug.log.csv', ';');
+        $db = new Database();
+        $db->connect();
+        
+        $query = 'SELECT fk_groupe, admin_groupe FROM crz_groupe_utilisateur WHERE fk_utilisateur = %d';
+        $query = $db->writeQuery($query, (int) $_SESSION['id_utilisateur']);
+        $result = $db->query($query);
+        if ($result->num_rows == 0) {
+          echo 'Demandez à un administrateur du site de vous ajouter dans un groupe...';
+        }
+        else {
       ?>
-      <div id="blanket" style="display: none"></div>
-      <div id="popUpDiv" style="display: none">
-        <a href="#" onclick="popup('popUpDiv')">Fermer</a>
-        <img style="display: block; margin-left: auto; margin-right: auto;" id="mainImg" src="" />
-      </div>
-      
       <fieldset>
         <legend>
           <form name="frmGroup" action="index.php" method="post">
@@ -128,7 +134,9 @@
       </fieldset>
       
       <?php
-      $db->close();
+        }
+        $db->close();      
+      }
       ?>
     </section>
     

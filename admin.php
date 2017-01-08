@@ -69,8 +69,10 @@ if (empty($_SESSION['id_utilisateur'])) {
             <?php
             $id_groupe = empty($_SESSION['selectedGroup']) ? $first_group : $_SESSION['selectedGroup'];
             
-            $query1 = 'SELECT id_utilisateur, login FROM crz_utilisateur ORDER BY login';
-            
+            $query1 = 'SELECT id_utilisateur, login, prenom, nom FROM crz_utilisateur';
+            $query1 .= ' WHERE EXISTS (SELECT * FROM crz_groupe_utilisateur WHERE fk_utilisateur = %d)';
+            $query1 .= ' ORDER BY login';
+            $query1 = $db->writeQuery($query1, (int) $_SESSION['id_utilisateur']);
             if ($result1 = $db->query($query1)) {
               $usersInGroup = array();
               $adminsInGroup = array();
@@ -90,9 +92,11 @@ if (empty($_SESSION['id_utilisateur'])) {
               while ($user1 = $result1->fetch_object('User')) {
                 $id_utilisateur = $user1->id_utilisateur;
                 $login = $user1->login;
+                $prenom = $user1->prenom;
+                $nom = $user1->nom;
                 echo '<input type="checkbox" id="gu', $i, '" name="selectedUsers[]"',
                   ' value="', $id_utilisateur, '"', in_array($id_utilisateur, $usersInGroup) ? ' checked="checked"' : '', ' />',
-                  '<label for="gu', $i, '">', $login, '</label>';
+                  '<label for="gu', $i, '">', $login, ' - <i>', $prenom, ' ', $nom, '</i></label>';
                 echo ' (<input type="checkbox" name="selectedAdmins[]"', ' value="', $id_utilisateur, '"',
                   in_array($id_utilisateur, $adminsInGroup) ? ' checked="checked"' : '', ' />admin)<br />', "\n";                
                 $i++;
@@ -125,7 +129,9 @@ if (empty($_SESSION['id_utilisateur'])) {
       
             $query3 = 'SELECT v.id_voiture, v.lib_voiture, u.login FROM crz_voiture v';
             $query3 .= ' INNER JOIN crz_utilisateur u ON v.fk_utilisateur = u.id_utilisateur';
+            $query3 .= ' WHERE EXISTS (SELECT * FROM crz_groupe_utilisateur WHERE fk_utilisateur = %d)';
             $query3 .= ' ORDER BY u.login, v.lib_voiture';
+            $query3 = $db->writeQuery($query3, (int) $_SESSION['id_utilisateur']);
             
             if ($result3 = $db->query($query3)) {              
               $query4 = $db->writeQuery('SELECT fk_voiture FROM crz_groupe_voiture WHERE fk_groupe = %d', (int) $id_groupe);
@@ -171,7 +177,7 @@ if (empty($_SESSION['id_utilisateur'])) {
           <div class="select users">
             <?php
             $usersInGroup = array();
-            $query5 = 'SELECT id_utilisateur, login FROM crz_utilisateur ORDER BY login';
+            $query5 = 'SELECT id_utilisateur, login, prenom, nom FROM crz_utilisateur ORDER BY login';
             if ($result5 = $db->query($query5)) {
               $query6 = 'SELECT DISTINCT fk_utilisateur FROM crz_groupe_utilisateur';
               if ($result6 = $db->query($query6)) {
@@ -186,8 +192,10 @@ if (empty($_SESSION['id_utilisateur'])) {
               while ($user5 = $result5->fetch_object('User')) {
                 $id_utilisateur = $user5->id_utilisateur;
                 $login = $user5->login;
+                $prenom = $user5->prenom;
+                $nom = $user5->nom;
                 echo '<input type="checkbox" id="u', $i, '" name="selectedUsers[]"', in_array($id_utilisateur, $usersInGroup) ? ' disabled="disabled"' : '',
-                  ' value="', $id_utilisateur, '" /><label for="u', $i, '">', $login, '</label><br />', "\n"; 
+                  ' value="', $id_utilisateur, '" /><label for="u', $i, '">', $login, ' - <i>', $prenom, ' ', $nom, '</i></label><br />', "\n"; 
                 $i++;
               }
             }

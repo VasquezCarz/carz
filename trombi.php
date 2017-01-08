@@ -34,10 +34,24 @@
     </nav>
     
     <section>
-      <table>
-        <?php
+      <?php
+      if (empty($_SESSION['id_utilisateur'])) {
+        echo 'Veuillez vous authentifier pour accéder au contenu...';
+      }
+      else {
         $db = new Database();
         $db->connect();
+        
+        $query = 'SELECT fk_groupe, admin_groupe FROM crz_groupe_utilisateur WHERE fk_utilisateur = %d';
+        $query = $db->writeQuery($query, (int) $_SESSION['id_utilisateur']);
+        $result = $db->query($query);
+        if ($result->num_rows == 0) {
+          echo 'Demandez à un administrateur du site de vous ajouter dans un groupe...';
+        }
+        else {
+      ?>
+      <table>
+        <?php
         $query = 'SELECT id_utilisateur, login, prenom FROM crz_utilisateur';
         $query .= ' WHERE id_utilisateur IN (SELECT fk_utilisateur FROM crz_groupe_utilisateur)';
         $query .= ' ORDER BY login';
@@ -56,6 +70,11 @@
         }
         ?>
       </table>
+      <?php
+        }
+        $db->close();
+      }
+      ?>
     </section>
     
     <script type="text/javascript">
