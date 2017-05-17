@@ -30,6 +30,39 @@ if (trim($_POST['txtMail']) != '') {
     $headers  = 'MIME-Version: 1.0'."\r\n";
     $headers .= 'Content-type: text/html; charset=UTF-8'."\r\n";
     mail($to, $subject, $body, $headers);
+    
+    /*
+    require PATH_SCRIPTS.'/php/PHPMailer/PHPMailerAutoload.php';
+
+    $mail = new PHPMailer;
+    
+    //$mail->SMTPDebug = 3;                               // Enable verbose debug output
+    
+    $mail->isSMTP();                                      // Set mailer to use SMTP
+    $mail->Host = 'smtp.free.fr';                         // Specify main and backup SMTP servers
+    $mail->SMTPAuth = true;                               // Enable SMTP authentication
+    $mail->Username = 'carzclub@free.fr';                 // SMTP username
+    $mail->Password = 'fe1-l0ng';                         // SMTP password
+    $mail->SMTPSecure = 'ssl';                            // Enable TLS encryption, `ssl` also accepted
+    $mail->Port = 465;                                    // TCP port to connect to
+    
+    $mail->setFrom('carzclub@free.fr', 'Carz Mailer');
+    $mail->addAddress($to);                               // Add a recipient
+    
+    $mail->isHTML(true);                                  // Set email format to HTML
+    $mail->CharSet = 'UTF-8';                             // Set charset to UTF-8
+    
+    $mail->Subject = $subject;
+    $mail->Body = $body;
+    //$mail->AltBody = 'This is the body in plain text for non-HTML mail clients';
+    
+    if (!$mail->send()) {
+      $_SESSION['msg'] = '<span class="error">Mailer Error: '.$mail->ErrorInfo.'</span>';
+    }
+    else {
+      $_SESSION['msg'] = '<span class="success">Le message de réinitialisation des identifiants de connexion a été envoyé.</span>';
+    }
+    */
     //--------------------------------------------------------------------------
   }
   else {

@@ -42,7 +42,7 @@
         echo 'Veuillez vous authentifier pour accéder au contenu...';
       }
       else {
-        //$log = new MyLogPHP('./log/debug.log.csv', ';');
+        //$log = new MyLogPHP('./logs/debug.log.csv', ';');
         $db = new Database();
         $db->connect();
         

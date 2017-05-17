@@ -15,4 +15,10 @@ function random_str($length = 10, $keyspace = '0123456789abcdefghijklmnopqrstuvw
   }
   return $str;
 }
+
+function my_mail($to, $subject, $body) {
+  $headers  = 'MIME-Version: 1.0'."\r\n";
+  $headers .= 'Content-type: text/html; charset=UTF-8'."\r\n";
+  return mail($to, $subject, $body, $headers);
+}
 ?>
