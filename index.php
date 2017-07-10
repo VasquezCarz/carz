@@ -20,13 +20,6 @@
   </head>
 
   <body id="home">
-    <?php
-    include 'config/carz.conf.php';
-    include PATH_SCRIPTS.'/php/Database.class.php';
-    require_once(PATH_SCRIPTS.'/php/Groupe.class.php');
-    require_once(PATH_SCRIPTS.'/php/Voiture.class.php');
-    //require_once(PATH_SCRIPTS.'/php/MyLogPHP.class.php');
-    ?>
     
     <header>
       <?php include 'header.inc.php'; ?>
@@ -43,9 +36,6 @@
       }
       else {
         //$log = new MyLogPHP('./logs/debug.log.csv', ';');
-        $db = new Database();
-        $db->connect();
-        
         $query = 'SELECT fk_groupe, admin_groupe FROM crz_groupe_utilisateur WHERE fk_utilisateur = %d';
         $query = $db->writeQuery($query, (int) $_SESSION['id_utilisateur']);
         $result = $db->query($query);
@@ -54,30 +44,6 @@
         }
         else {
       ?>
-      <fieldset>
-        <legend>
-          <form name="frmGroup" action="index.php" method="post">
-            Groupe :
-            <select name="group" onchange="document.frmGroup.submit();">
-              <?php
-              // Requête sur les groupes
-              $query = 'SELECT id_groupe as id, lib_groupe as libelle FROM crz_groupe ORDER BY lib_groupe';
-              if ($result = $db->query($query)) {
-                //$log->debug('Before groupe fetching');
-                $first_group = 0;
-                $group = empty($_POST['group']) ? 0 : $_POST['group'];
-                
-                $i = 0;
-                while ($groupe = $result->fetch_object('Groupe')) {
-                  if ($i == 0) $first_group = $groupe->id;              
-                  echo '<option value="', $groupe->id, '"', $groupe->id == $group ? ' selected="selected"' : '', '>', $groupe->libelle, '</option>', "\n";
-                  $i++;           
-                }
-              }
-              ?>
-            </select>
-          </form>
-        </legend>
       
         <table class="listing border">
           <tr>
@@ -94,8 +60,6 @@
             <th colspan="2">Propriétaire</th>
           </tr>
           <?php
-          $id_groupe = empty($_POST['group']) ? $first_group : $_POST['group'];
-          
           $query = 'SELECT v.id_voiture, v.lib_voiture, v.annee, ma.lib_marque, m.lib_modele, c.lib_code, mot.lib_motorisation, mot.energie, p.puissance, p.couple, b.lib_boite, u.id_utilisateur, u.login, u.prenom, u.prenom';
           $query .= ' FROM crz_voiture v';
           $query .= ' INNER JOIN crz_modele m ON v.fk_modele = m.id_modele';
@@ -108,7 +72,7 @@
           $query .= ' LEFT OUTER JOIN crz_motorisation mot ON p.fk_motorisation = mot.id_motorisation';
           $query .= ' WHERE gv.fk_groupe = %d';
           $query .= ' ORDER BY ma.lib_marque, c.id_code, m.id_modele, u.login';
-          $query = $db->writeQuery($query, (int) $id_groupe);
+          $query = $db->writeQuery($query, (int) $_SESSION['group']);
           
           if ($result = $db->query($query)) {
             while ($voiture = $result->fetch_object('Voiture')) {
@@ -131,11 +95,8 @@
           }
           ?>
         </table>
-      </fieldset>
-      
       <?php
         }
-        $db->close();      
       }
       ?>
     </section>

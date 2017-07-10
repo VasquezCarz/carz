@@ -20,11 +20,6 @@
   </head>
 
   <body id="trombi">
-    <?php
-    include 'config/carz.conf.php';
-    require_once(PATH_SCRIPTS.'/php/Database.class.php');
-    require_once(PATH_SCRIPTS.'/php/User.class.php');     
-    ?>
     <header>
       <?php include 'header.inc.php'; ?>
     </header>
@@ -39,9 +34,6 @@
         echo 'Veuillez vous authentifier pour accéder au contenu...';
       }
       else {
-        $db = new Database();
-        $db->connect();
-        
         $query = 'SELECT fk_groupe, admin_groupe FROM crz_groupe_utilisateur WHERE fk_utilisateur = %d';
         $query = $db->writeQuery($query, (int) $_SESSION['id_utilisateur']);
         $result = $db->query($query);
@@ -53,8 +45,9 @@
       <table>
         <?php
         $query = 'SELECT id_utilisateur, login, prenom FROM crz_utilisateur';
-        $query .= ' WHERE id_utilisateur IN (SELECT fk_utilisateur FROM crz_groupe_utilisateur)';
+        $query .= ' WHERE id_utilisateur IN (SELECT fk_utilisateur FROM crz_groupe_utilisateur WHERE fk_groupe = %d)';
         $query .= ' ORDER BY login';
+        $query = $db->writeQuery($query, (int) $_SESSION['group']);
         if ($result = $db->query($query)) {
           $i = 0;
           while ($user = $result->fetch_object('User')) {
@@ -72,7 +65,6 @@
       </table>
       <?php
         }
-        $db->close();
       }
       ?>
     </section>

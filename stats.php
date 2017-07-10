@@ -16,14 +16,6 @@
   </head>
 
   <body id="stats">
-    <?php
-    include 'config/carz.conf.php';
-    include PATH_SCRIPTS.'/php/Database.class.php';
-  
-    require_once(PATH_SCRIPTS.'/php/Stats1.class.php');
-    require_once(PATH_SCRIPTS.'/php/Stats2.class.php');
-    require_once(PATH_SCRIPTS.'/php/Stats3.class.php'); 
-    ?>
     <header>
       <?php include 'header.inc.php'; ?>
     </header>
@@ -34,8 +26,17 @@
     
     <section>
       <?php
-      $db = new Database();
-      $db->connect();
+      if (empty($_SESSION['id_utilisateur'])) {
+        echo 'Veuillez vous authentifier pour accéder au contenu...';
+      }
+      else {
+        $query = 'SELECT fk_groupe, admin_groupe FROM crz_groupe_utilisateur WHERE fk_utilisateur = %d';
+        $query = $db->writeQuery($query, (int) $_SESSION['id_utilisateur']);
+        $result = $db->query($query);
+        if ($result->num_rows == 0) {
+          echo 'Demandez à un administrateur du site de vous ajouter dans un groupe...';
+        }
+        else {
       
       $query = 'SELECT COUNT(v.id_voiture) AS ccnt,';
       $query .= ' MIN(p.puissance) AS pmin, ROUND(AVG(p.puissance), 2) AS pavg, MAX(p.puissance) AS pmax, SUM(p.puissance) AS psum,';
@@ -46,7 +47,8 @@
       $query .= ' FROM crz_voiture v';
       $query .= ' INNER JOIN crz_puissance p ON v.fk_puissance = p.id_puissance';
       $query .= ' INNER JOIN crz_motorisation m ON p.fk_motorisation = m.id_motorisation';      
-      $query .= ' WHERE v.id_voiture IN (SELECT fk_voiture FROM crz_groupe_voiture)';
+      $query .= ' WHERE v.id_voiture IN (SELECT fk_voiture FROM crz_groupe_voiture WHERE fk_groupe = %d)';
+      $query = $db->writeQuery($query, (int) $_SESSION['group']);
       
       if ($result = $db->query($query)) {
         if ($stats1 = $result->fetch_object('Stats1')) {
@@ -117,8 +119,9 @@
       $query .= ' FROM crz_voiture v';
       $query .= ' INNER JOIN crz_puissance p ON v.fk_puissance = p.id_puissance';
       $query .= ' INNER JOIN crz_motorisation m ON p.fk_motorisation = m.id_motorisation';
-      $query .= ' WHERE v.id_voiture IN (SELECT fk_voiture FROM crz_groupe_voiture)';
+      $query .= ' WHERE v.id_voiture IN (SELECT fk_voiture FROM crz_groupe_voiture WHERE fk_groupe = %d)';
       $query .= ' GROUP BY m.energie';
+      $query = $db->writeQuery($query, (int) $_SESSION['group']);
       
       if ($result = $db->query($query)) {
       ?>
@@ -157,8 +160,9 @@
         $query .= ' FROM crz_voiture v';
         $query .= ' INNER JOIN crz_puissance p ON v.fk_puissance = p.id_puissance';
         $query .= ' INNER JOIN crz_motorisation m ON p.fk_motorisation = m.id_motorisation';
-        $query .= ' WHERE v.id_voiture IN (SELECT fk_voiture FROM crz_groupe_voiture)';
+        $query .= ' WHERE v.id_voiture IN (SELECT fk_voiture FROM crz_groupe_voiture WHERE fk_groupe = %d)';
         $query .= ' GROUP BY m.suralimentation';
+        $query = $db->writeQuery($query, (int) $_SESSION['group']);
         
         if ($result = $db->query($query)) {
         ?>
@@ -182,8 +186,9 @@
             <canvas id="myChart2" width="300" height="300"></canvas>
           </div>
         <?php
+            }
+          }
         }
-        $db->close();
         ?>
       </div>
     </section>

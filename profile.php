@@ -32,14 +32,6 @@ if (empty($_SESSION['id_utilisateur'])) {
     
     <section>
       <?php
-      include 'config/carz.conf.php';
-      include PATH_SCRIPTS.'/php/Database.class.php';
-      require_once(PATH_SCRIPTS.'/php/User.class.php');
-      require_once(PATH_SCRIPTS.'/php/Voiture.class.php');
-      
-      $db = new Database();
-      $db->connect();
-      
       $query = $db->writeQuery('SELECT login, nom, prenom, mail, hash_activation FROM crz_utilisateur WHERE id_utilisateur = %d', (int) $_SESSION['id_utilisateur']);
       if ($result = $db->query($query)) {
         if ($user = $result->fetch_object('User')) {
@@ -171,9 +163,6 @@ if (empty($_SESSION['id_utilisateur'])) {
         </table>
         <div class="info">Seules les voitures qui ne sont pas dans un groupe peuvent être supprimées.</div>
       </fieldset>
-      <?php
-      $db->close();
-      ?>
     </section>
     
     <script type="text/javascript">

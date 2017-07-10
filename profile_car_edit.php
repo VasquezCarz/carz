@@ -27,13 +27,6 @@ if (empty($_SESSION['id_utilisateur'])) {
     
     <section>
       <?php
-      include 'config/carz.conf.php';
-      include PATH_SCRIPTS.'/php/Database.class.php';
-      require_once(PATH_SCRIPTS.'/php/Voiture.class.php');
-      
-      $db = new Database();
-      $db->connect();
-        
       if (!empty($_GET['car_id'])) {
         $_SESSION['id_voiture'] = $_GET['car_id'];
       }
@@ -248,8 +241,6 @@ if (empty($_SESSION['id_utilisateur'])) {
       <?php
         }
       }
-      
-      $db->close();
       ?>
     </section>
     

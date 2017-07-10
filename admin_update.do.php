@@ -31,8 +31,9 @@ if ($_POST['form'] == 'frmGroupUser' && $_POST['saveUsersInGroup'] == 'Enregistr
   $query = $db->writeQuery('DELETE FROM crz_groupe_utilisateur WHERE fk_groupe = %d', (int) $_POST['selectedGroup']);
   $db->query($query);
   for ($i = 0; $i < count($_POST['selectedUsers']); $i++) {
+    $selectedAdmins = empty($_POST['selectedAdmins']) ? array() : $_POST['selectedAdmins'];
     $query = 'INSERT INTO crz_groupe_utilisateur (fk_groupe, fk_utilisateur, admin_groupe) VALUES (%d, %d, %d)';
-    $query = $db->writeQuery($query, (int) $_POST['selectedGroup'], (int) $_POST['selectedUsers'][$i], in_array($_POST['selectedUsers'][$i], $_POST['selectedAdmins']) ? 1 : 0);
+    $query = $db->writeQuery($query, (int) $_POST['selectedGroup'], (int) $_POST['selectedUsers'][$i], in_array($_POST['selectedUsers'][$i], $selectedAdmins) ? 1 : 0);
     $db->query($query);
   }
 }

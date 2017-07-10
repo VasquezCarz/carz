@@ -26,16 +26,6 @@ if (empty($_SESSION['id_utilisateur'])) {
     </nav>
     
     <section>
-      <?php
-      include 'config/carz.conf.php';
-      include PATH_SCRIPTS.'/php/Database.class.php';
-      require_once(PATH_SCRIPTS.'/php/Voiture.class.php');
-      require_once(PATH_SCRIPTS.'/php/Pays.class.php');
-      
-      $db = new Database();
-      $db->connect();
-      ?>
-      
       <form name="frmCar" action="profile_car_create.do.php" method="post">
         <!--------- Marque ---------------------------------------------------->
         <fieldset>
@@ -411,10 +401,6 @@ if (empty($_SESSION['id_utilisateur'])) {
           Exemple : Audi S5 Coupe V8 4.2 FSI 354 quattro
         </div>
       </form>
-            
-      <?php
-      $db->close();
-      ?>
     </section>
     
     <footer>

@@ -15,10 +15,32 @@
       </form>
     <?php
     }
-    // Sinon on affiche le lien de déconnexion
+    // Sinon on affiche le menu lié à l'utilisateur
     else {
     ?>
     <div style="float: right;">
+      <form name="frmChangeGroup" action="" method="post" style="display: inline;">
+        Groupe :
+        <select name="group" onchange="document.frmChangeGroup.submit();">
+          <?php
+          // Requête sur les groupes
+          $query = 'SELECT id_groupe AS id, lib_groupe AS libelle FROM crz_groupe';
+          $query .= ' WHERE id_groupe IN (SELECT fk_groupe FROM crz_groupe_utilisateur WHERE fk_utilisateur = %d)';
+          $query .= ' ORDER BY lib_groupe';
+          $query = $db->writeQuery($query, (int) $_SESSION['id_utilisateur']);
+          if ($result = $db->query($query)) {
+            $first_group = 0;
+            $i = 0;
+            if (!empty($_POST['group'])) $_SESSION['group'] = $_POST['group'];
+            while ($groupe = $result->fetch_object('Groupe')) {
+              if (empty($_SESSION['group']) && $i == 0) $_SESSION['group'] = $groupe->id; // on met le premier groupe en variable de session si cette dernière n'existe pas
+              echo '<option value="', $groupe->id, '"', $groupe->id == $_SESSION['group'] ? ' selected="selected"' : '', '>', $groupe->libelle, '</option>', "\n";
+              $i++;           
+            }
+          }
+          ?>
+        </select>
+      </form>
       <a href="profile.php"><img src="graphics/user.png" title="Profil" /> Profil [<?php echo $_SESSION['login'] ?>]</a>
       <a href="admin.php"><img src="graphics/cog.png" title="Administration" /> Administration</a>
       <a href="logout.do.php"><img src="graphics/cancel.png" title="Déconnexion" /> Déconnexion</a>

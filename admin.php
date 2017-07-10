@@ -26,17 +26,6 @@ if (empty($_SESSION['id_utilisateur'])) {
     </nav>
     
     <section>
-      <?php
-      include 'config/carz.conf.php';
-      include PATH_SCRIPTS.'/php/Database.class.php';
-      require_once(PATH_SCRIPTS.'/php/Groupe.class.php');
-      require_once(PATH_SCRIPTS.'/php/User.class.php');
-      require_once(PATH_SCRIPTS.'/php/Voiture.class.php');
-      
-      $db = new Database();
-      $db->connect();
-      ?>
-      
       <fieldset>
         <legend>Groupes / Utilisateurs</legend>
         <form name="frmGroupUser" action="admin_update.do.php" method="post">
@@ -58,7 +47,7 @@ if (empty($_SESSION['id_utilisateur'])) {
                 $lib_groupe = $groupe->lib_groupe;
                 if ($i == 0) $first_group = $id_groupe;
                 $select_options .= '<option value="'.$id_groupe.'"'.($id_groupe == $_SESSION['selectedGroup'] ? ' selected="selected"' : '').'>'.$lib_groupe.'</option>'."\n";
-                $k++;
+                $i++;
               }
               echo $select_options;
             }
@@ -68,9 +57,8 @@ if (empty($_SESSION['id_utilisateur'])) {
           <div class="select users">
             <?php
             $id_groupe = empty($_SESSION['selectedGroup']) ? $first_group : $_SESSION['selectedGroup'];
-            
             $query1 = 'SELECT id_utilisateur, login, prenom, nom FROM crz_utilisateur';
-            $query1 .= ' WHERE EXISTS (SELECT * FROM crz_groupe_utilisateur WHERE fk_utilisateur = %d)';
+            $query1 .= ' WHERE EXISTS (SELECT * FROM crz_groupe_utilisateur WHERE fk_utilisateur = %d AND admin_groupe = 1)';
             $query1 .= ' ORDER BY login';
             $query1 = $db->writeQuery($query1, (int) $_SESSION['id_utilisateur']);
             if ($result1 = $db->query($query1)) {
@@ -98,7 +86,7 @@ if (empty($_SESSION['id_utilisateur'])) {
                   ' value="', $id_utilisateur, '"', in_array($id_utilisateur, $usersInGroup) ? ' checked="checked"' : '', ' />',
                   '<label for="gu', $i, '">', $login, ' - <i>', $prenom, ' ', $nom, '</i></label>';
                 echo ' (<input type="checkbox" name="selectedAdmins[]"', ' value="', $id_utilisateur, '"',
-                  in_array($id_utilisateur, $adminsInGroup) ? ' checked="checked"' : '', ' />admin)<br />', "\n";                
+                  in_array($id_utilisateur, $adminsInGroup) ? ' checked="checked"' : '', ' />admin)<br />', "\n";
                 $i++;
               }
             }
@@ -129,11 +117,11 @@ if (empty($_SESSION['id_utilisateur'])) {
       
             $query3 = 'SELECT v.id_voiture, v.lib_voiture, u.login FROM crz_voiture v';
             $query3 .= ' INNER JOIN crz_utilisateur u ON v.fk_utilisateur = u.id_utilisateur';
-            $query3 .= ' WHERE EXISTS (SELECT * FROM crz_groupe_utilisateur WHERE fk_utilisateur = %d)';
+            $query3 .= ' WHERE EXISTS (SELECT * FROM crz_groupe_utilisateur WHERE fk_utilisateur = %d AND admin_groupe = 1)';
             $query3 .= ' ORDER BY u.login, v.lib_voiture';
             $query3 = $db->writeQuery($query3, (int) $_SESSION['id_utilisateur']);
             
-            if ($result3 = $db->query($query3)) {              
+            if ($result3 = $db->query($query3)) {
               $query4 = $db->writeQuery('SELECT fk_voiture FROM crz_groupe_voiture WHERE fk_groupe = %d', (int) $id_groupe);
               $carsInGroup = array();
               
@@ -195,7 +183,7 @@ if (empty($_SESSION['id_utilisateur'])) {
                 $prenom = $user5->prenom;
                 $nom = $user5->nom;
                 echo '<input type="checkbox" id="u', $i, '" name="selectedUsers[]"', in_array($id_utilisateur, $usersInGroup) ? ' disabled="disabled"' : '',
-                  ' value="', $id_utilisateur, '" /><label for="u', $i, '">', $login, ' - <i>', $prenom, ' ', $nom, '</i></label><br />', "\n"; 
+                  ' value="', $id_utilisateur, '" /><label for="u', $i, '">', $login, ' - <i>', $prenom, ' ', $nom, '</i></label><br />', "\n";
                 $i++;
               }
             }
@@ -212,7 +200,7 @@ if (empty($_SESSION['id_utilisateur'])) {
           </div>
         </form>
       </fieldset>
-      
+            
       <fieldset>
         <legend>Voitures</legend>
         <form name="frmCar" action="admin_update.do.php" method="post">
@@ -310,10 +298,7 @@ if (empty($_SESSION['id_utilisateur'])) {
           </div>
         </form>
       </fieldset>
-      <?php
-      }      
-      $db->close();
-      ?>
+      <?php } ?>
     </section>
     
     <footer>
